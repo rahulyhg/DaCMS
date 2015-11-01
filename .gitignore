@@ -1,0 +1,17 @@
+/vendor
+/node_modules
+/nbproject
+/config/_*.php
+/bootstrap/compiled.php
+/storage/app/*
+/storage/framework/*
+/storage/logs/*
+ftpsync.settings
+composer.phar
+composer.lock
+.env
+.DS_Store
+.idea
+.settings
+Thumbs.db
+_*git.*
