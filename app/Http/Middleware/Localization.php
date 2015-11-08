@@ -15,7 +15,7 @@ class Localization {
 	public function handle($request, Closure $next)
 	{
 		// detect bots
-		if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|google|yahoo|bing|yandex|facebook|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']))
+		/*if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|google|yahoo|bing|yandex|facebook|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']))
 		{
 				setcookie("lang", 'bg', time()+3600*24*365);
 		    	$lang = 'bg';
@@ -39,8 +39,23 @@ class Localization {
 						}
 				}
 			}
+			*/
 
-		//Config::set('app.locale', $lang);
+		// if cloudflare geolocation header exists
+		if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]))
+		{
+			$lang = strtolower($_SERVER["HTTP_CF_IPCOUNTRY"]);
+			setcookie("lang", $lang, time()+3600*24*365, '/');
+		}
+		else
+		{
+    		$lang = env('APP_LOCALE');
+		}
+
+		// cookie
+		setcookie("lang", $lang, time()+3600*24*365, '/');
+
+		// set locale
 		App::setLocale($lang);
 
 		// next ?
