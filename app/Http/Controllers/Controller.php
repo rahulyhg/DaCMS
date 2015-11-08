@@ -10,16 +10,9 @@ abstract class Controller extends BaseController
 	use DispatchesCommands, ValidatesRequests;
 
 	// get app's current language
-	protected function getLang($fallback = true)
+	protected function getLang()
 	{
-		$lang = Config::get('app.locale');
-
-		if ($fallback)
-		{
-			if ($lang != 'bg' && $lang != 'en') $lang = 'en';
-		}
-
-		return $lang;
+		return Config::get('app.locale');
 	}
 
 }
