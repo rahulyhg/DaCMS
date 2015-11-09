@@ -4,16 +4,13 @@
 $lang = env('APP_LOCALE');
 
 // meta
-if ($lang == 'en')
-{
-    if (!isset($meta['title'])) $meta['title']="Homepage";
-    if (!isset($meta['description'])) $meta['description']="A very simple CMS build with Laravel and Bootstrap.";
-    if (!isset($meta['keywords'])) $meta['keywords']="dacms, cms, laravel, bootstrap";
-    if (!isset($meta['robots'])) $meta['robots']="index, follow, noodp, noydir";
-    if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
+if (!isset($meta['title'])) $meta['title']="Homepage";
+if (!isset($meta['description'])) $meta['description']="A very simple CMS build with Laravel and Bootstrap.";
+if (!isset($meta['keywords'])) $meta['keywords']="dacms, cms, laravel, bootstrap";
+if (!isset($meta['robots'])) $meta['robots']="index, follow, noodp, noydir";
+if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
 
-    $feed = secure_url('feed/en');
-}
+$feed = secure_url('feed/en');
 
 // assets
 if (!App::environment('local')) { Asset::$secure=true; }
