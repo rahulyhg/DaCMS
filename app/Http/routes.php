@@ -43,14 +43,14 @@ Route::post('blog/del/{id}', 'PostController@postDelete');
 Route::get('blog/{slug}', 'PostController@getView');
 
 // CategoryController
-Route::get('Categorys', 'CategoryController@getIndex');
-Route::get('Categorys/add', 'CategoryController@getCreate');
-Route::post('Categorys/add', 'CategoryController@postCreate');
-Route::get('Categorys/edit/{id}', 'CategoryController@getEdit');
-Route::post('Categorys/edit/{id}', 'CategoryController@postEdit');
-Route::get('Categorys/del/{id}', 'CategoryController@getDelete');
-Route::post('Categorys/del/{id}', 'CategoryController@postDelete');
-Route::get('Categorys/{slug}', 'CategoryController@getView');
+Route::get('category', 'CategoryController@getIndex');
+Route::get('category/add', 'CategoryController@getCreate');
+Route::post('category/add', 'CategoryController@postCreate');
+Route::get('category/edit/{id}', 'CategoryController@getEdit');
+Route::post('category/edit/{id}', 'CategoryController@postEdit');
+Route::get('category/del/{id}', 'CategoryController@getDelete');
+Route::post('category/del/{id}', 'CategoryController@postDelete');
+Route::get('category/{slug}', 'CategoryController@getView');
 
 // TagController
 Route::get('tag', 'TagController@getIndex');
