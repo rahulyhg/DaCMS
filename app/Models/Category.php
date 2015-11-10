@@ -12,7 +12,7 @@ class Category extends Model
 
     public function posts()
     {
-        return $this->belongsToMany('App\Category', 'categories_to_posts', 'category_id', 'post_id');
+        return $this->belongsToMany('App\Post', 'categories_to_posts', 'category_id', 'post_id')->orderBy('created_at','desc')->whereIn('isVisible', array('1','2'));
     }
 
 
