@@ -16,10 +16,9 @@ Route::post('contact', 'HomeController@postContact');
 Route::get('login', 'HomeController@getLogin');
 Route::post('login', 'HomeController@postLogin');
 Route::get('logout', 'HomeController@getLogout');
+Route::get('user/{id}', 'HomeController@getUser');
 Route::get('feed', 'HomeController@getFeed');
-Route::get('feed/en', 'HomeController@getFeeden');
 Route::get('feed/projects', 'HomeController@getFeedprojects');
-Route::get('feed/projects/en', 'HomeController@getFeedprojectsen');
 Route::get('sitemap', 'HomeController@getSitemap');
 
 // PageController
