@@ -10,8 +10,6 @@ if (!isset($meta['keywords'])) $meta['keywords']="dacms, cms, laravel, bootstrap
 if (!isset($meta['robots'])) $meta['robots']="index, follow, noodp, noydir";
 if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
 
-$feed = secure_url('feed/en');
-
 // assets
 if (!App::environment('local')) { Asset::$secure=true; }
 
@@ -24,6 +22,10 @@ Asset::addFirst(secure_url('js/default.js?'));
 Asset::addFirst('https://cdn.roumen.it/repo/bootstrap/3.3.1/js/bootstrap.min.js');
 Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
 
+// data
+$tags = \App\Tag::get();
+$categories = \App\Category::get();
+$authors = \App\User::get();
 ?>
 <!DOCTYPE html>
 <html lang="{{$lang}}">
@@ -41,7 +43,7 @@ Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
     <meta name="author" content="Roumen Damianoff"/>
 
     <link rel="canonical" href="{{$meta['canonical']}}"/>
-    <link rel="alternate" hreflang="{{ $lang }}" type="application/rss+xml" title="RSS Feed" href="{{$feed}}" />
+    <link rel="alternate" hreflang="{{ $lang }}" type="application/rss+xml" title="RSS Feed" href="{{secure_url('feed')}}" />
 
     {{ Asset::css() }}
     {{ Asset::scripts('header') }}
@@ -78,14 +80,18 @@ Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
                     <li><a href="{{secure_url('/about')}}">About</a></li>
                     <li><a href="{{secure_url('/blog')}}">Blog</a></li>
                     <li><a href="{{secure_url('/contact')}}">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     @if (Auth::check())
-                    <li><a href="{{secure_url('/admin')}}">Admin</a></li>
-                    <li><a href="{{secure_url('/logout')}}">Logout</a></li>
+                    <li><a href="{{secure_url('/dashboard')}}">Dashboard</a></li>
+                    <li><a href="{{secure_url('/logout')}}">Logout ({{ Auth::user()->username }})</a></li>
                     @else
                     <li><a href="{{secure_url('/login')}}">Login</a> </li>
                     @endif
+                    </span>
                 </ul>
             </div>
+
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
@@ -96,10 +102,11 @@ Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
 
         <div class="row">
 
-            <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <h1 class="page-header">DaCMS <small>{{$meta['title']}}</small></h1>
+                <!-- Header -->
+                @yield('header')
+                <!-- ./Header -->
 
                 <!-- Content -->
                 @yield('content')
@@ -107,17 +114,110 @@ Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
 
             </div>
 
-            <!-- Blog Sidebar Widgets Column -->
+            <!-- Sidebar -->
             <div class="col-md-4">
 
-                <!-- Sidebar -->
-                @yield('sidebar')
-                <!-- /Sidebar -->
+                <!-- Search -->
+                <div class="well">
+                    <h4>Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
 
-            </div>
+                <!-- Categories -->
+                <div class="well">
+                    <h4>Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                            @define $c=1
+                            @foreach ($categories as $category)
+                            @if ($c % 2 == 0)
+                            <li><a href="{{secure_url('/category/'.$category->slug)}}">{{ $category->name }}</a> ({{ count($category->posts) }})
+                            @endif
+                            @define $c++
+                            @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                            @define $c=2
+                            @foreach ($categories as $category)
+                            @if ($c % 2 == 0)
+                            <li><a href="{{secure_url('/category/'.$category->slug)}}">{{ $category->name }}</a> ({{ count($category->posts) }})
+                            @endif
+                            @define $c++
+                            @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="well">
+                    <h4>Tags</h4>
+                    <?php
+
+                    $maximum = 0;
+
+                    foreach ($tags as $tag)
+                    {
+                        if (count($tag->posts) > $maximum)
+                        {
+                            $maximum = count($tag->posts);
+                        }
+                    }
+
+                    foreach ($tags as $tag)
+                    {
+                        if (count($tag->posts) > 0)
+                        {
+
+                            $percent = floor((count($tag->posts) / $maximum) * 100);
+
+                             // determine the class for this term based on the percentage
+                             if ($percent < 20):
+                               $class = 'smallest';
+                             elseif ($percent >= 20 and $percent < 40):
+                               $class = 'small';
+                             elseif ($percent >= 40 and $percent < 60):
+                               $class = 'medium';
+                             elseif ($percent >= 60 and $percent < 80):
+                               $class = 'large';
+                             else:
+                             $class = 'largest';
+                             endif;
+
+                            echo '<a class="'.$class.'" href="'.secure_url("/tag/".$tag->slug).'">'.$tag->slug.'</a> ';
+                        }
+                    }
+                    ?>
+                </div>
+
+                <!-- Authors -->
+                <div class="well">
+                    <h4>Top 10 Authors</h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="list-unstyled">
+                            @foreach ($authors as $author)
+                             <li><a href="{{secure_url('/user/'.$author->id)}}">{{ $author->username }}</a> ({{ count($author->posts) }})
+                            @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @yield('sidebar')
 
         </div>
-        <!-- /.row -->
+        <!-- /Sidebar -->
 
         <hr>
 
