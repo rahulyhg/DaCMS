@@ -10,23 +10,28 @@ class Post extends Model
     public $timestamps = false;
 
 
+
     public function tags()
     {
-        return $this->belongsToMany('App\Tag', 'tags_to_posts', 'posts_slug', 'tags_slug');
+        return $this->belongsToMany('App\Tag', 'tags_to_posts', 'post_id', 'tag_id');
 
     }
+
+
 
     public function categories()
     {
-        return $this->belongsToMany('App\Category', 'categories_to_posts', 'category_id', 'post_id');
-
+        return $this->belongsToMany('App\Category', 'categories_to_posts', 'post_id', 'category_id');
     }
+
+
 
     public function user()
     {
         $this->primaryKey = 'id';
         return $this->belongsTo('App\User');
     }
+
 
 
     public function lcomments()
