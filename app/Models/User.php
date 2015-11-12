@@ -6,7 +6,8 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
 
 	use Authenticatable, CanResetPassword;
 
@@ -32,24 +33,37 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $hidden = ['password', 'remember_token'];
 
 
+
     public function posts()
     {
-        return $this->hasMany('App\Post','user_id');
+        return $this->hasMany('App\Post','user_id')->orderBy('created_at','desc');
     }
+
+
+    public function usergroups()
+    {
+      return $this->belongsToMany('App\Usergroup', 'users_to_usergroups', 'user_id', 'usergroup_id');
+    }
+
 
     public function getRememberToken()
 	{
 	    return $this->remember_token;
 	}
 
+
+
 	public function setRememberToken($value)
 	{
 	    $this->remember_token = $value;
 	}
 
+
+
 	public function getRememberTokenName()
 	{
 	    return 'remember_token';
 	}
+
 
 }
