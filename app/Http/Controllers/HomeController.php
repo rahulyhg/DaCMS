@@ -6,6 +6,8 @@ use App;
 use App\Post;
 use App\Tag;
 use App\Category;
+use App\User;
+use App\Usergroup;
 use Asset;
 use Validator;
 use Input;
@@ -26,13 +28,37 @@ class HomeController extends Controller
 
     public function getIndex()
     {
+        // meta
+        $meta['title'] = '';
+        $meta['canonical'] = env('APP_URL');
+        $meta['description'] = '';
+        $meta['keywords'] = '';
 
+        // assets
         Asset::add(secure_url('js/home.js'));
 
+        // data
         $posts = Post::where('isVisible', '=', '1')->where('lang', '=', 'en')->orderBy('created_at', 'desc')->paginate(5);
-        //$posts->setPath(secure_url('blog'));
 
-        return view('home.index')->with('posts', $posts);
+        // return view
+        return view('home.index')->with('meta', $meta)->with('posts', $posts);
+    }
+
+
+
+    public function getUser($id)
+    {
+        $user = User::where('id','=', $id)->first();
+        if (empty($user)) return view('errors.404'); // not found
+
+        // meta
+        $meta['title'] = 'Profile of user: '.$user->username;
+        $meta['canonical'] = env('APP_URL').'user/'.$id;
+        $meta['description'] = 'Profile of user: '.$user->username;
+        $meta['keywords'] = ''.$user->username;
+
+        // view
+        return view('home.user')->with('meta', $meta)->with('user', $user);
     }
 
 
@@ -83,9 +109,10 @@ class HomeController extends Controller
 
     public function getLogout()
     {
-        if (!Auth::check()) { return Redirect::secure('/'); }
+        if (!Auth::check()) return Redirect::secure('/');
 
         Auth::logout();
+
         return Redirect::secure('login');
     }
 
@@ -107,7 +134,7 @@ class HomeController extends Controller
             $posts = Post::whereIn('isVisible', array('1','2'))->orderBy('updated_at', 'desc')->get();
             //$pages = Page::whereIn('isVisible', array('1','2'))->orderBy('updated_at', 'desc')->get();
             $categories = Category::get();
-            //$tags = Tag::get();
+            $tags = Tag::get();
 
             foreach ($posts as $post)
             {
@@ -123,7 +150,6 @@ class HomeController extends Controller
                 }
             }
 
-            /*
             foreach ($tags as $tag)
             {
                 if (count($tag->posts) > 0)
@@ -132,7 +158,6 @@ class HomeController extends Controller
                     $sitemap->add(secure_url('tag/'.$tag->slug),$latest,'0.25','weekly');
                 }
             }
-            */
 
         }
 
