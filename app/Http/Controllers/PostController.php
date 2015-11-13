@@ -4,6 +4,7 @@ use App;
 use App\Post;
 use App\Category;
 use App\User;
+use App\Tag;
 use Auth;
 use Asset;
 use Redirect;
@@ -41,12 +42,13 @@ class PostController extends Controller
         $posts = Post::where('isVisible', '=', '1')->where('lang', '=', $lang)->orderBy('created_at', 'desc')->paginate(5);
         $categories = Category::get();
         $authors = User::take(10)->get();
+        $tags = Tag::get();
 
         // check for problems
         $posts->setPath(secure_url('blog')); // fix pagintor
 
         // get the view
-        return view('post.index')->with('posts', $posts)->with('categories', $categories)->with('authors', $authors);
+        return view('post.index')->with('posts', $posts)->with('categories', $categories)->with('authors', $authors)->with('tags',$tags);;
     }
 
 
@@ -59,6 +61,7 @@ class PostController extends Controller
         // get needed data from models
         $post = Post::where('slug', '=', $slug)->where('lang', '=', $lang)->first();
         $categories = Category::get();
+        $tags = Tag::get();
         $authors = User::take(10)->get();
 
         // check for problems
@@ -74,11 +77,22 @@ class PostController extends Controller
         $meta['keywords'] = $post->keywords;
 
         // page assets
-        Asset::add(secure_url('js/blog.js'));
-        Asset::add(secure_url('js/disqus.js'));
+        Asset::add(secure_url('/js/blog.js'));
+
+        if ($post->isDisqus == 1)
+        {
+            Asset::add('https://ws.sharethis.com/button/buttons.js');
+            Asset::addScript('var disqus_config=function(){this.language="'.$lang.'";};','footer');
+            Asset::add(secure_url('js/disqus.js'));
+        }
+        if ($post->isHL == 1)
+        {
+            Asset::add('https://cdn.roumen.it/repo/shl/styles/dark.css');
+            Asset::add('https://cdn.roumen.it/repo/shl/scripts/default.js');
+        }
 
         // get the view
-        return view('post.view')->with('meta', $meta)->with('post', $post)->with('categories', $categories)->with('authors', $authors);
+        return view('post.view')->with('meta', $meta)->with('post', $post)->with('categories', $categories)->with('authors', $authors)->with('tags',$tags);
     }
 
 
