@@ -45,6 +45,27 @@ class HomeController extends Controller
     }
 
 
+    public function getDashboard()
+    {
+        // check if user is logged in
+        if (!Auth::check()) return Redirect::secure('/login');
+
+        // data
+        $user = User::where('id', '=', Auth::user()->id)->first();
+
+        // meta
+        $meta['title'] = 'Dashboard';
+        $meta['canonical'] = env('APP_URL').'dashboard';
+        $meta['description'] = '';
+        $meta['keywords'] = '';
+
+        // assets
+        Asset::add(secure_url('js/home.js'));
+
+        // return view
+        return view('home.dashboard')->with('meta', $meta)->with('user', $user);
+    }
+
 
     public function getUser($id)
     {
@@ -65,7 +86,7 @@ class HomeController extends Controller
 
     public function getLogin()
     {
-        if (Auth::check()) { return Redirect::secure('/'); }
+        if (Auth::check()) return Redirect::secure('/');
 
         $meta['title'] = 'Login form';
         $meta['canonical'] = env('APP_URL').'login';
