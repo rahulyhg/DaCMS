@@ -46,6 +46,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
+    public function role($id=null)
+    {
+    	if ($id==null) $id = \Auth::user()->id;
+
+    	$bestgroup = \DB::table('users_to_usergroups')->where('user_id','=',$id)->orderBy('usergroup_id','desc')->first();
+
+		switch ($bestgroup->usergroup_id)
+		{
+		case 1:
+		    $class = 'admin';
+		    break;
+		case 2:
+		    $class = 'moderator';
+		    break;
+		case 3:
+		    $class = 'editor';
+		    break;
+		case 4:
+		    $class = 'user';
+		    break;
+	    default:
+	    	$class = 'user';
+		}
+
+		return $class;
+    }
+
+
     public function getRememberToken()
 	{
 	    return $this->remember_token;
