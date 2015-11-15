@@ -21,27 +21,27 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth', ['only' => 'getLogout']);
+        $this->middleware('auth', ['only' => 'getDisqus2db']);
     }
 
 
 
-    public function getIndex()
+    public function getContact()
     {
-        // meta
-        $meta['title'] = '';
-        $meta['canonical'] = env('APP_URL');
-        $meta['description'] = '';
-        $meta['keywords'] = '';
+        // todo
+    }
 
-        // assets
-        Asset::add(secure_url('js/home.js'));
 
-        // data
-        $posts = Post::where('isVisible', '=', '1')->where('lang', '=', 'en')->orderBy('created_at', 'desc')->paginate(5);
+    public function postContact()
+    {
+        // todo
+    }
 
-        // return view
-        return view('home.index')->with('meta', $meta)->with('posts', $posts);
+
+
+    public function getDisqus2db()
+    {
+        // todo
     }
 
 

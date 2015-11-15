@@ -14,6 +14,7 @@ Route::get('contact', 'HomeController@getContact');
 Route::post('contact', 'HomeController@postContact');
 Route::get('feed', 'HomeController@getFeed');
 Route::get('sitemap', 'HomeController@getSitemap');
+Route::get('disqus2db', 'HomeController@getDisqus2db');
 
 // UserCotroller
 Route::get('login', 'UserController@getLogin');
@@ -56,4 +57,5 @@ Route::post('page/del/{id}', 'PageController@postDelete');
 Route::get('/pages', 'PageController@getIndex');
 Route::get('/', 'PageController@getView');
 Route::get('/{slug}', 'PageController@getView');
+
 });
