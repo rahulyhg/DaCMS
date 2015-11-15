@@ -1,18 +1,14 @@
 ## [DaCMS](https://github.com/RoumenDamianoff/DaCMS)
 
-Simple CMS build with Laravel and Bootstrap.
+A simple demo CMS build with Laravel and Bootstrap.
 
-Live [demo](https://dacms.co).
+**Note:** DaCMS is NOT meant for production use!
 
-**Note:** DaCMS is build just as a demo and it's NOT meant for production use!
+### Credits
 
-## Wiki (todo)
+#### [Laravel](https://laravel.com)
 
-## Credits
-
-### [Laravel](https://laravel.com)
-
-### [Composer](https://getcomposer.com) packages:
+#### [Composer](https://getcomposer.com) packages:
 
 - [laravel-assets](https://github.com/RoumenDamianoff/laravel-sitemap)
 - [laravel-sitemap](https://github.com/RoumenDamianoff/laravel-sitemap)
@@ -23,6 +19,6 @@ Live [demo](https://dacms.co).
 - [mews-purifier](https://github.com/mewebstudio/Purifier)
 - [greggilbert-recaptcha](https://github.com/greggilbert/recaptcha)
 
-### [Bootstrap](https://getbootstrap.com)
+#### [Bootstrap](https://getbootstrap.com)
 
-### [JQuery](https://jquery.com)
+#### [JQuery](https://jquery.com)
