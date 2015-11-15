@@ -1,24 +1,23 @@
-## [DaCMS](https://github.com/RoumenDamianoff/DaCMS)
+## [DaCMS](https://dacms.co)
 
-A simple demo CMS build with Laravel and Bootstrap.
+CMS build with Laravel and Bootstrap.
 
-**Note:** DaCMS is NOT meant for production use!
+**NOT meant for production use!**
 
-### Credits
+## Credits
 
-#### [Laravel](https://laravel.com)
+- [Laravel](https://laravel.com)
 
-#### [Composer](https://getcomposer.com) packages:
+- [Composer](https://getcomposer.com) packages:
+  - [laravel-assets](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-sitemap](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-feed](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-disqus](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-lang](https://github.com/caouecs/Laravel-lang)
+  - [laravelcollective-html](https://github.com/LaravelCollective/html)
+  - [mews-purifier](https://github.com/mewebstudio/Purifier)
+  - [greggilbert-recaptcha](https://github.com/greggilbert/recaptcha)
 
-- [laravel-assets](https://github.com/RoumenDamianoff/laravel-sitemap)
-- [laravel-sitemap](https://github.com/RoumenDamianoff/laravel-sitemap)
-- [laravel-feed](https://github.com/RoumenDamianoff/laravel-sitemap)
-- [laravel-disqus](https://github.com/RoumenDamianoff/laravel-sitemap)
-- [laravel-lang](https://github.com/caouecs/Laravel-lang)
-- [laravelcollective-html](https://github.com/LaravelCollective/html)
-- [mews-purifier](https://github.com/mewebstudio/Purifier)
-- [greggilbert-recaptcha](https://github.com/greggilbert/recaptcha)
+- [Bootstrap](https://getbootstrap.com)
 
-#### [Bootstrap](https://getbootstrap.com)
-
-#### [JQuery](https://jquery.com)
+- [JQuery](https://jquery.com)
