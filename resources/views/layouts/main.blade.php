@@ -121,11 +121,14 @@ $authors = \App\User::get();
                 <div class="well">
                     <h4>Search</h4>
                     <div class="input-group">
-                        <input type="text" class="form-control">
+                        <form id="searchForm" method="post" action="{{ secure_url('search') }}">
+                            <input type="text" name="s" id="s" class="form-control">
+                            {!! Form::token() !!}
+                        </form>
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button class="btn btn-default" type="submit" form="searchForm">
                                 <span class="glyphicon glyphicon-search"></span>
-                        </button>
+                            </button>
                         </span>
                     </div>
                 </div>

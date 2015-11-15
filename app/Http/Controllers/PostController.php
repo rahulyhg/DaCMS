@@ -17,8 +17,8 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['getIndex', 'getView']]);
-        $this->middleware('admin', ['except' => ['getIndex','getView']]);
+        $this->middleware('auth', ['except' => ['getIndex', 'getView','Search']]);
+        $this->middleware('admin', ['except' => ['getIndex','getView','Search']]);
     }
 
 
@@ -39,16 +39,13 @@ class PostController extends Controller
         Asset::add(secure_url('js/blog.js'));
 
         // get data from models
-        $posts = Post::where('isVisible', '=', '1')->where('lang', '=', $lang)->orderBy('created_at', 'desc')->paginate(5);
-        $categories = Category::get();
-        $authors = User::take(10)->get();
-        $tags = Tag::get();
+        $posts = Post::where('isVisible', '=', '1')->orderBy('created_at', 'desc')->paginate(5);
 
         // check for problems
         $posts->setPath(secure_url('blog')); // fix pagintor
 
         // get the view
-        return view('post.index')->with('posts', $posts)->with('categories', $categories)->with('authors', $authors)->with('tags',$tags);;
+        return view('post.index')->with('posts', $posts)->with('meta', $meta);
     }
 
 
@@ -93,6 +90,37 @@ class PostController extends Controller
 
         // get the view
         return view('post.view')->with('meta', $meta)->with('post', $post)->with('categories', $categories)->with('authors', $authors)->with('tags',$tags);
+    }
+
+
+
+    public function Search()
+    {
+        // get current language
+        $lang = $this->getLang();
+
+        // meta
+        $meta['title'] = 'Search results';
+        $meta['canonical'] = env('APP_URL').'blog/';
+        $meta['robots'] = 'index,follow,noodp,noydir';
+        $meta['description'] = 'Blog page';
+        $meta['keywords'] = 'blog';
+
+        // page assets
+        Asset::add(secure_url('js/blog.js'));
+
+        // get data from models
+        $s = Input::get('s', 'post');
+        $posts = Post::where('isVisible', '=', '1')->where('title', 'LIKE', "%$s%")
+                                                   ->orWhere('content', 'LIKE', "%$s%")
+                                                   ->orWhere('resume', 'LIKE', "%$s%")
+                                                   ->orderBy('created_at', 'desc')->paginate(5);
+
+        // check for problems
+        $posts->setPath(secure_url('search')); // fix pagintor
+
+        // get the view
+        return view('post.search')->with('posts', $posts)->with('s', $s)->with('meta', $meta);
     }
 
 

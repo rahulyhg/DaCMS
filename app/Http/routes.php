@@ -32,6 +32,7 @@ Route::post('blog/edit/{id}', 'PostController@postEdit');
 Route::get('blog/del/{id}', 'PostController@getDelete');
 Route::post('blog/del/{id}', 'PostController@postDelete');
 Route::get('blog/{slug}', 'PostController@getView');
+Route::any('search', 'PostController@Search');
 
 // CategoryController
 Route::get('categories', 'CategoryController@getIndex');
