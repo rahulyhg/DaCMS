@@ -63,3 +63,8 @@ footer
 {
 	display:none;
 }
+
+.error
+{
+	color:red !important;
+}
