@@ -15,7 +15,7 @@ use Purifier;
 use Mail;
 use Session;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
 
 
@@ -25,23 +25,96 @@ class HomeController extends Controller
     }
 
 
-
-    public function getIndex()
+    public function getDashboard()
     {
+        // check if user is logged in
+        if (!Auth::check()) return Redirect::secure('/login');
+
+        // data
+        $user = User::where('id', '=', Auth::user()->id)->first();
+
         // meta
-        $meta['title'] = '';
-        $meta['canonical'] = env('APP_URL');
+        $meta['title'] = 'Dashboard';
+        $meta['canonical'] = env('APP_URL').'dashboard';
         $meta['description'] = '';
         $meta['keywords'] = '';
 
         // assets
         Asset::add(secure_url('js/home.js'));
 
-        // data
-        $posts = Post::where('isVisible', '=', '1')->where('lang', '=', 'en')->orderBy('created_at', 'desc')->paginate(5);
-
         // return view
-        return view('home.index')->with('meta', $meta)->with('posts', $posts);
+        return view('user.dashboard')->with('meta', $meta)->with('user', $user);
+    }
+
+
+    public function getUser($id)
+    {
+        $user = User::where('id','=', $id)->first();
+        if (empty($user)) return view('errors.404'); // not found
+
+        // meta
+        $meta['title'] = 'Profile of user: '.$user->username;
+        $meta['canonical'] = env('APP_URL').'user/'.$id;
+        $meta['description'] = 'Profile of user: '.$user->username;
+        $meta['keywords'] = ''.$user->username;
+
+        // view
+        return view('user.profile')->with('meta', $meta)->with('user', $user);
+    }
+
+
+
+    public function getLogin()
+    {
+        if (Auth::check()) return Redirect::secure('/');
+
+        $meta['title'] = 'Login form';
+        $meta['canonical'] = env('APP_URL').'login';
+        $meta['robots'] = 'noindex';
+
+        return view('user.login')->with('meta', $meta);
+    }
+
+
+
+    public function postLogin()
+    {
+        $rules = array(
+                'email'  => 'required|email',
+                'password' => 'required|min:4',
+                'g-recaptcha-response' => 'required|recaptcha'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+            $remember = (Input::has('remember')) ? true : false;
+
+            if (Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password'), 'isActive' => 1], $remember))
+            {
+                return Redirect::secure('/');
+            }
+            else
+            {
+                return Redirect::secure('login')->withInput();
+            }
+        }
+        else
+        {
+            return Redirect::secure('login')->withInput()->withErrors($validation);
+        }
+    }
+
+
+
+    public function getLogout()
+    {
+        if (!Auth::check()) return Redirect::secure('/');
+
+        Auth::logout();
+
+        return Redirect::secure('login');
     }
 
 

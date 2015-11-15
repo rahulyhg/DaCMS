@@ -16,11 +16,11 @@ Route::get('feed', 'HomeController@getFeed');
 Route::get('sitemap', 'HomeController@getSitemap');
 
 // UserCotroller
-Route::get('login', 'HomeController@getLogin');
-Route::post('login', 'HomeController@postLogin');
-Route::get('logout', 'HomeController@getLogout');
-Route::get('user/{id}', 'HomeController@getUser');
-Route::get('dashboard', 'HomeController@getDashboard');
+Route::get('login', 'UserController@getLogin');
+Route::post('login', 'UserController@postLogin');
+Route::get('logout', 'UserController@getLogout');
+Route::get('user/{id}', 'UserController@getUser');
+Route::get('dashboard', 'UserController@getDashboard');
 
 // PostController
 Route::get('blog', 'PostController@getIndex');
