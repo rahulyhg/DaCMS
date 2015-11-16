@@ -11,18 +11,19 @@ if (!isset($meta['robots'])) $meta['robots']="index, follow, noodp, noydir";
 if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
 
 // assets
-if (!App::environment('local')) { Asset::$secure=true; }
+//if (!App::environment('local')) { Asset::$secure=true; }
 
 //Asset::setDomain('https://cdn.roumen.it/dacms/');
 Asset::addFirst(secure_url('css/blog.css?'));
 Asset::addFirst('https://cdn.roumen.it/repo/bootstrap/3.3.1/css/bootstrap.min.css');
 
-Asset::addFirst(secure_url('js/default.js?'));
+Asset::addFirst(secure_url('js/main.js?'));
 //Asset::addFirst('https://cdn.roumen.it/repo/snowstorm/snowstorm-min.js');
 Asset::addFirst('https://cdn.roumen.it/repo/bootstrap/3.3.1/js/bootstrap.min.js');
 Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
 
 // data
+// TODO caching
 $tags = \App\Tag::get();
 $categories = \App\Category::get();
 $authors = \App\User::get();
@@ -48,13 +49,10 @@ $authors = \App\User::get();
     {{ Asset::css() }}
     {{ Asset::scripts('header') }}
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <script src="https://cdn.roumen.it/repo/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://cdn.roumen.it/repo/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
     <title>{{$meta['title']}}</title>
 </head>
 
@@ -184,7 +182,7 @@ $authors = \App\User::get();
 
                             $percent = floor((count($tag->posts) / $maximum) * 100);
 
-                             // determine the class for this term based on the percentage
+                             // determine the class based on the percentage
                              if ($percent < 20):
                                $class = 'smallest';
                              elseif ($percent >= 20 and $percent < 40):
@@ -219,8 +217,8 @@ $authors = \App\User::get();
 
                 @yield('sidebar')
 
-        </div>
-        <!-- /Sidebar -->
+            </div>
+            <!-- /Sidebar -->
 
         <hr>
 
