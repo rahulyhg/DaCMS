@@ -9,6 +9,7 @@ use App\Category;
 use App\User;
 use App\Usergroup;
 use Asset;
+use Hash;
 use Validator;
 use Input;
 use Purifier;
@@ -21,8 +22,147 @@ class UserController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth', ['only' => 'getLogout']);
+        $this->middleware('auth', ['except' => ['getIndex','getView','getLogin','postLogin','getLogout']]);
+        $this->middleware('moderator', ['except' => ['getIndex','getView','getLogin','postLogin','getLogout','getDashboard']]);
     }
+
+
+
+    public function getView($id)
+    {
+        $user = User::where('id','=', $id)->first();
+        if (empty($user)) return view('errors.404'); // not found
+
+        // meta
+        $meta['title'] = 'Profile of user: '.$user->username;
+        $meta['canonical'] = env('APP_URL').'user/'.$id;
+        $meta['description'] = 'Profile of user: '.$user->username;
+        $meta['keywords'] = ''.$user->username;
+
+        // view
+        return view('user.view')->with('meta', $meta)->with('user', $user);
+    }
+
+
+ public function getEdit($id)
+    {
+        $user = User::where('id','=',$id)->first();
+
+        $meta['title'] = 'Edit user';
+
+        $s1 = "$('#deleteBtn').click(function(){window.location = '".secure_url('/user/del/'.$id)."';});";
+
+        Asset::addScript($s1, 'ready');
+
+        return view('user.edit')->with('meta', $meta)->with('user', $user);
+    }
+
+
+
+    public function postEdit($id)
+    {
+        $rules = array(
+                'username'  => 'required|min:3|max:20',
+                //'password' => 'required|min:3',
+                'email'  => 'required|min:5',
+                'first_name'  => 'required|min:2|max:60',
+                'first_name' => 'required|min:2|max:60'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+                $data = array(
+                   'username' => Input::get('username'),
+                   //'password' => Input::get('password'),
+                   'email' => Input::get('email'),
+                   'first_name' => Input::get('first_name'),
+                   'last_name' => Input::get('last_name'),
+                   'isActive' => Input::get('isActive')
+                );
+
+         User::where('id','=',$id)->update($data);
+
+         \DB::table('users_to_usergroups')->where('user_id','=',$id)->update(['usergroup_id'=>Input::get('usergroup')]);
+
+        }
+
+        return Redirect::secure('user/edit/'.$id)->withErrors($validation);
+    }
+
+
+
+    public function getCreate()
+    {
+        $meta['title'] = "Create user";
+
+        return view('user.create')->with('meta', $meta);
+    }
+
+
+
+    public function postCreate()
+    {
+        $rules = array(
+                'username'  => 'required|min:3|max:20',
+                'password' => 'required|min:3',
+                'email'  => 'required|min:5',
+                'first_name'  => 'required|min:2|max:60',
+                'first_name' => 'required|min:2|max:60'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+                $data = [
+                   'username' => Input::get('username'),
+                   'password' => Hash::make(Input::get('password')), // hash the password
+                   'email' => Input::get('email'),
+                   'first_name' => Input::get('first_name'),
+                   'last_name' => Input::get('last_name'),
+                   'isActive' => Input::get('isActive')
+                ];
+
+         $id = User::insertGetId($data);
+
+         \DB::table('users_to_usergroups')->insert(['user_id'=>$id,'usergroup_id'=>Input::get('usergroup')]);
+
+         return Redirect::secure('/'.Input::get('slug'));
+
+        }
+
+        return Redirect::secure('user/add')->withErrors($validation);
+    }
+
+
+
+    public function getDelete($id)
+    {
+        $user = User::where('id','=',$id)->first();
+
+        $meta['title'] = 'DELETE: ' . $user->title;
+
+        return view('user.delete')->with('meta', $meta)->with('user', $user);
+    }
+
+
+
+    public function postDelete($id)
+    {
+          if (Input::get('confirm')==true)
+          {
+              User::where('id','=',$id)->delete();
+
+              \DB::table('users_to_usergroups')->where('user_id','=',$id)->delete();
+
+              return Redirect::secure('/');
+          }
+
+          return Redirect::secure('user/del/'.$id);
+    }
+
 
 
     public function getDashboard()
@@ -44,22 +184,6 @@ class UserController extends Controller
 
         // return view
         return view('user.dashboard')->with('meta', $meta)->with('user', $user);
-    }
-
-
-    public function getUser($id)
-    {
-        $user = User::where('id','=', $id)->first();
-        if (empty($user)) return view('errors.404'); // not found
-
-        // meta
-        $meta['title'] = 'Profile of user: '.$user->username;
-        $meta['canonical'] = env('APP_URL').'user/'.$id;
-        $meta['description'] = 'Profile of user: '.$user->username;
-        $meta['keywords'] = ''.$user->username;
-
-        // view
-        return view('user.profile')->with('meta', $meta)->with('user', $user);
     }
 
 
@@ -115,88 +239,6 @@ class UserController extends Controller
         Auth::logout();
 
         return Redirect::secure('login');
-    }
-
-
-
-    public function getSitemap()
-    {
-
-        $sitemap = App::make("sitemap");
-
-        $sitemap->setCache('dacms-sitemap', 1);
-
-        if (!$sitemap->isCached())
-        {
-
-            $sitemap->add(secure_url('/'),'2015-11-12T20:00:00+02:00','1.0','weekly');
-            $sitemap->add(secure_url('blog'),'2015-11-12T20:00:00+02:00','1.0','weekly');
-
-            $posts = Post::whereIn('isVisible', array('1','2'))->orderBy('updated_at', 'desc')->get();
-            //$pages = Page::whereIn('isVisible', array('1','2'))->orderBy('updated_at', 'desc')->get();
-            $categories = Category::get();
-            $tags = Tag::get();
-
-            foreach ($posts as $post)
-            {
-                $sitemap->add(secure_url('blog/'.$post->slug),date('Y-m-d\TH:i:sP',strtotime($post->updated_at)),'0.95','weekly');
-            }
-
-            foreach ($categories as $cat)
-            {
-                if (count($cat->posts) > 0)
-                {
-                    $latest = @date('Y-m-d\TH:i:sP',strtotime($cat->posts[0]->updated_at));
-                    $sitemap->add(secure_url('category/'.$cat->slug), $latest, '0.35', 'weekly');
-                }
-            }
-
-            foreach ($tags as $tag)
-            {
-                if (count($tag->posts) > 0)
-                {
-                    $latest = @date('Y-m-d\TH:i:sP',strtotime($tag->posts[0]->updated_at));
-                    $sitemap->add(secure_url('tag/'.$tag->slug),$latest,'0.25','weekly');
-                }
-            }
-
-        }
-
-        return $sitemap->render();
-    }
-
-
-
-    public function getFeed()
-    {
-
-        $feed = App::make("feed");
-
-        $feed->setCache(180, 'dacms-feed');
-
-        if (!$feed->isCached())
-        {
-
-            $posts = Post::where('isVisible','=','1')->orderBy('created_at', 'desc')->take(12)->get();
-
-            $feed->title = 'Latest posts';
-            $feed->description = 'DaCMS blog feed';
-            $feed->link = env('APP_URL');
-            $feed->logo = env('APP_URL') . 'favicon.png';
-            $feed->icon = env('APP_URL') . 'favicon.png';
-            $feed->pubdate = $posts[0]->created_at;
-            $feed->lang = 'en';
-            $feed->setDateFormat('datetime');
-
-           foreach ($posts as $post)
-            {
-                $feed->add($post->title, 'DaCMS', secure_url('blog/'.$post->slug), $post->created_at, $post->resume, $post->content);
-            }
-
-        }
-
-         return $feed->render('atom');
-
     }
 
 
