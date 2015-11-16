@@ -21,11 +21,16 @@
         </p>
     </div>
     <div class="col-xs-4 col-xs-push-1">
-        <p class=" text-right"><span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->user->id)}}">{{ $post->user->username }}</a></p>
+        <p class=" text-right">
+            <span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->user->id)}}">{{ $post->user->username }}</a>
+            @if (Auth::check() && in_array(Auth::user()->role(Auth::user()->id), ['admin', 'moderator', 'editor']))
+            <span class="glyphicon glyphicon-pencil"></span> <a href="{{secure_url('/blog/edit/'.$post->id)}}">Edit</a>
+            @endif
+        </p>
     </div>
 </div>
 <hr style="margin-top:0px">
-<p class="text-justify">{{ $post->content }}</p>
+<p class="text-justify">{!! $post->content !!}</p>
 <hr>
 
 <div class="row">
