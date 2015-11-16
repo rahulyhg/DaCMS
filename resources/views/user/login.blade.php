@@ -5,13 +5,10 @@
 @endsection
 
 @section('content')
-   <section id="widepage">
-
-   <div id="login" style="padding:50px 0 50px 130px">
-
+<div class="row">
    @if ($errors->getMessages())
-      <div class="alert alert-danger" style="margin:10px 15px 30px -100px;">
-         <p>Error!</p>
+      <div class="alert alert-danger">
+         <strong>Error!</strong> Please, fix the errors below.
          <a class="close" href="#" data-dismiss="alert">×</a>
       </div>
    @endif
@@ -82,5 +79,4 @@
    {!!Form::close()!!}
    </div>
 
-   </section>
 @endsection
