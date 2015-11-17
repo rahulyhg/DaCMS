@@ -22,19 +22,67 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['only' => 'getDisqus2db']);
+        $this->middleware('admin', ['only' => 'getDisqus2db']);
     }
 
 
 
     public function getContact()
     {
-        // todo
+        //meta
+        $meta['title'] = 'Contact form';
+        $meta['canonical'] = env('APP_URL').'/contact';
+        $meta['robots'] = 'noindex';
+
+        // assets
+        Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
+        $script = "$(function(){CKEDITOR.replace('message',{toolbar:'Basic',height:'150px',width:'555px',toolbarCanCollapse:true,toolbarStartupExpanded:false,startupShowBorders:false});});";
+        Asset::addScript($script);
+
+        // view
+        return view('home.contact')->with('meta', $meta);
     }
 
 
     public function postContact()
     {
-        // todo
+        $rules = array(
+                'name'  => 'required|min:2|max:50',
+                'email' => 'required|email',
+                'subject'  => 'required|min:2|max:50',
+                'message'  => 'required|min:10',
+                'g-recaptcha-response' => 'required|recaptcha'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+            // send e-mail
+            $data = array(
+                        'body'=> Purifier::clean(Input::get('message')),
+                        'subject'=> strip_tags(Purifier::clean(Input::get('subject'))),
+                        'name'=> strip_tags(Purifier::clean(Input::get('name'))),
+                        'email' => strip_tags(Purifier::clean(Input::get('email')))
+                    );
+
+           /* Mail::send('emails.contact', $data, function($message)
+            {
+                $message->from('no-reply@dawebs.com', strip_tags(Purifier::clean(Input::get('name'))));
+                $message->replyTo(strip_tags(Purifier::clean(Input::get('email'))), strip_tags(Purifier::clean(Input::get('name'))));
+                $message->to('nospam@roumen.it');
+                $message->subject(strip_tags(Purifier::clean(Input::get('subject'))));
+            });
+
+            */
+
+            Session::flash('sended', 'true');
+            return Redirect::secure('contact')->withInput();
+
+        }
+        else {
+                return Redirect::secure('contact')->withInput()->withErrors($validation);
+            }
     }
 
 
