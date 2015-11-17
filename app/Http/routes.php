@@ -20,8 +20,14 @@ Route::get('disqus2db', 'HomeController@getDisqus2db');
 Route::get('login', 'UserController@getLogin');
 Route::post('login', 'UserController@postLogin');
 Route::get('logout', 'UserController@getLogout');
-Route::get('user/{id}', 'UserController@getUser');
 Route::get('dashboard', 'UserController@getDashboard');
+Route::get('user/add', 'UserController@getCreate');
+Route::post('user/add', 'UserController@postCreate');
+Route::get('user/edit/{id}', 'UserController@getEdit');
+Route::post('user/edit/{id}', 'UserController@postEdit');
+Route::get('user/del/{id}', 'UserController@getDelete');
+Route::post('user/del/{id}', 'UserController@postDelete');
+Route::get('user/{id}', 'UserController@getView');
 
 // PostController
 Route::get('blog', 'PostController@getIndex');
@@ -46,6 +52,12 @@ Route::get('category/{slug}', 'CategoryController@getView');
 
 // TagController
 Route::get('tags', 'TagController@getIndex');
+Route::get('tag/add', 'TagController@getCreate');
+Route::post('tag/add', 'TagController@postCreate');
+Route::get('tag/edit/{id}', 'TagController@getEdit');
+Route::post('tag/edit/{id}', 'TagController@postEdit');
+Route::get('tag/del/{id}', 'TagController@getDelete');
+Route::post('tag/del/{id}', 'TagController@postDelete');
 Route::get('tag/{slug}', 'TagController@getView');
 
 // PageController
