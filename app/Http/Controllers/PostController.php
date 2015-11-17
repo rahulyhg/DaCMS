@@ -17,14 +17,14 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['getIndex', 'getView','Search']]);
-        $this->middleware('admin', ['except' => ['getIndex','getView','Search']]);
+        $this->middleware('auth', ['except' => ['getIndex','getView','Search']]);
+        $this->middleware('editor', ['except' => ['getIndex','getView','Search','getDelete','postDelete']]);
+        $this->middleware('moderator', ['only' => ['getDelete','postDelete']]);
     }
 
 
     public function getIndex()
     {
-
         // get current language
         $lang = $this->getLang();
 
@@ -89,7 +89,7 @@ class PostController extends Controller
         }
 
         // get the view
-        return view('post.view')->with('meta', $meta)->with('post', $post)->with('categories', $categories)->with('authors', $authors)->with('tags',$tags);
+        return view('post.view')->with('meta', $meta)->with('post', $post);
     }
 
 
@@ -121,6 +121,146 @@ class PostController extends Controller
 
         // get the view
         return view('post.search')->with('posts', $posts)->with('s', $s)->with('meta', $meta);
+    }
+
+
+
+        public function getEdit($id)
+    {
+        $post = Post::where('id','=',$id)->first();
+
+        $meta['title'] = 'Edit post';
+
+        $s1  = "$(function(){CKEDITOR.replace('post_content',{toolbar:'Standart',height:'400px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
+        $s1 .= "$(function(){CKEDITOR.replace('resume',{toolbar:'Standart',height:'100px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
+        $s2 = "$('#deleteBtn').click(function(){window.location = '".secure_url('/blog/del/'.$id)."';});";
+
+        Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
+        Asset::addScript($s1, 'ready');
+        Asset::addScript($s2, 'ready');
+
+        return view('post.edit')->with('meta', $meta)->with('post', $post);
+    }
+
+
+
+    public function postEdit($id)
+    {
+        $rules = array(
+                'title'  => 'required|min:3|max:80',
+                'slug' => 'required|min:3',
+                'post_content'  => 'required|min:15',
+                'resume'  => 'required|min:15',
+                'description'  => 'required|min:10|max:180',
+                'keywords' => 'required|min:3|max:90'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+                $data = array(
+                   'title' => Input::get('title'),
+                   'slug' => Input::get('slug'),
+                   'content' => Input::get('post_content'),
+                   'resume' => Input::get('resume'),
+                   'description' => Input::get('description'),
+                   'keywords' => Input::get('keywords'),
+                   'robots' => Input::get('robots'),
+                   'lang' => Input::get('lang'),
+                   'isVisible' => Input::get('visible'),
+                   'isHL' => Input::get('hl'),
+                   'isDisqus' => Input::get('comments'),
+                );
+
+         Post::where('id','=',$id)->update($data);
+
+         return Redirect::secure('blog/'.Input::get('slug'));
+
+        }
+
+        return Redirect::secure('blog/edit/'.$id)->withErrors($validation);
+    }
+
+
+
+    public function getCreate()
+    {
+        $meta['title'] = "Create post";
+
+        $s1  = "$(function(){CKEDITOR.replace('post_content',{toolbar:'Standart',height:'400px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
+        $s1 .= "$(function(){CKEDITOR.replace('resume',{toolbar:'Standart',height:'100px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
+
+        Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
+        Asset::addScript($s1, 'ready');
+
+        return view('post.create')->with('meta', $meta);
+    }
+
+
+
+    public function postCreate()
+    {
+        $rules = array(
+                'title'  => 'required|min:3|max:80',
+                'slug' => 'required|min:3',
+                'post_content'  => 'required|min:15',
+                'resume'  => 'required|min:15',
+                'description'  => 'required|min:10|max:180',
+                'keywords' => 'required|min:3|max:90'
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+
+        if ($validation->passes())
+        {
+                $data = array(
+                   'title' => Input::get('title'),
+                   'slug' => Input::get('slug'),
+                   'content' => Input::get('post_content'),
+                   'resume' => Input::get('resume'),
+                   'description' => Input::get('description'),
+                   'keywords' => Input::get('keywords'),
+                   'robots' => Input::get('robots'),
+                   'lang' => Input::get('lang'),
+                   'isVisible' => Input::get('visible'),
+                   'isHL' => Input::get('hl'),
+                   'isDisqus' => Input::get('comments'),
+                   'user_id' => Auth::user()->id
+                );
+
+         Post::insert($data);
+
+         return Redirect::secure('/blog/'.Input::get('slug'));
+
+        }
+
+        return Redirect::secure('blog/add')->withErrors($validation);
+    }
+
+
+
+    public function getDelete($id)
+    {
+        $post = Post::where('id','=',$id)->first();
+
+        $meta['title'] = 'DELETE: ' . $post->title;
+
+        return view('post.delete')->with('meta', $meta)->with('post', $post);
+    }
+
+
+
+    public function postDelete($id)
+    {
+          if (Input::get('confirm')==true)
+          {
+              Post::where('id','=',$id)->delete();
+
+              return Redirect::secure('/blog');
+          }
+
+          return Redirect::secure('blog/del/'.$id);
     }
 
 
