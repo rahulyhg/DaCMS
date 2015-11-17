@@ -2,7 +2,7 @@
 
 use Closure;
 
-class RoleAdmin
+class RoleModerator
 {
 
 	/**
@@ -15,7 +15,7 @@ class RoleAdmin
 	public function handle($request, Closure $next)
 	{
 
-		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin']) )
+		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin', 'moderator']) )
 		{
 			return view('errors.403');
 		}
