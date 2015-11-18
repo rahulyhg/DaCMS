@@ -27,11 +27,17 @@
 		</p>
 	</div>
 	<div class="col-xs-3 col-xs-push-1">
-		<p class=" text-right"><span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->user->id)}}">{{ $post->user->username }}</a></p>
+		<p class=" text-right">
+			<span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->user->id)}}">{{ $post->user->username }}</a>
+            @if (Auth::check() && in_array(Auth::user()->role(Auth::user()->id), ['admin', 'moderator', 'editor']))
+            <span class="glyphicon glyphicon-pencil"></span> <a href="{{secure_url('/blog/edit/'.$post->id)}}">Edit</a>
+            @endif
+		</p>
 	</div>
 </div>
 <hr style="margin-top:0;">
-<p>{{ $post->resume }} <a title="Read more" href="{{ secure_url('/blog/'.$post->slug) }}"><span class="glyphicon glyphicon-chevron-right"></span></a></p>
+
+<a style="text-decoration:none;color:inherit;" title="Read more" href="{{ secure_url('/blog/'.$post->slug) }}"> {!! $post->resume !!} </a>
 
 <hr>
 @endforeach
