@@ -14,13 +14,13 @@ if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
 //if (!App::environment('local')) { Asset::$secure=true; }
 
 //Asset::setDomain('https://cdn.roumen.it/dacms/');
-Asset::addFirst(secure_url('css/blog.css?'));
-Asset::addFirst('https://cdn.roumen.it/repo/bootstrap/3.3.1/css/bootstrap.min.css');
+Asset::add('https://cdn.roumen.it/repo/bootstrap/*/css/bootstrap.min.css');
+Asset::add(secure_url('css/blog.css?'));
 
-Asset::addFirst(secure_url('js/main.js?'));
-//Asset::addFirst('https://cdn.roumen.it/repo/snowstorm/snowstorm-min.js');
-Asset::addFirst('https://cdn.roumen.it/repo/bootstrap/3.3.1/js/bootstrap.min.js');
-Asset::addFirst('https://cdn.roumen.it/repo/jquery/jquery-1.11.2.min.js');
+Asset::add('https://cdn.roumen.it/repo/jquery/jquery-*.min.js');
+Asset::add('https://cdn.roumen.it/repo/bootstrap/*/js/bootstrap.min.js');
+Asset::add(secure_url('js/main.js?'));
+//Asset::add('https://cdn.roumen.it/repo/snowstorm/snowstorm-min.js');
 
 // data
 // TODO caching
