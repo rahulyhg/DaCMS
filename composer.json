@@ -8,9 +8,9 @@
 		"laravel/framework": "5.1.*",
 		"laravelcollective/html": "~5",
 		"predis/predis": "~1.1@dev",
-		"roumen/asset": "dev-master",
-		"roumen/sitemap": "dev-master",
-		"roumen/feed": "dev-master",
+		"roumen/asset": "2.5.*",
+		"roumen/sitemap": "2.5.*",
+		"roumen/feed": "2.9.*",
 		"roumen/disqus": "dev-master",
 		"mews/purifier": "~2.0",
 		"greggilbert/recaptcha": "dev-master"
