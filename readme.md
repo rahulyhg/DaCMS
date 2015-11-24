@@ -9,10 +9,10 @@ CMS build with Laravel and Bootstrap.
 - [Laravel](https://laravel.com)
 
 - [Composer](https://getcomposer.com) packages:
-  - [laravel-assets](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-assets](https://github.com/RoumenDamianoff/laravel-assets)
   - [laravel-sitemap](https://github.com/RoumenDamianoff/laravel-sitemap)
-  - [laravel-feed](https://github.com/RoumenDamianoff/laravel-sitemap)
-  - [laravel-disqus](https://github.com/RoumenDamianoff/laravel-sitemap)
+  - [laravel-feed](https://github.com/RoumenDamianoff/laravel-feed)
+  - [laravel-disqus](https://github.com/RoumenDamianoff/laravel-disqus)
   - [laravel-lang](https://github.com/caouecs/Laravel-lang)
   - [laravelcollective-html](https://github.com/LaravelCollective/html)
   - [mews-purifier](https://github.com/mewebstudio/Purifier)
