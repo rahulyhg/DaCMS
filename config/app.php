@@ -155,6 +155,7 @@ return [
 		'Roumen\Sitemap\SitemapServiceProvider',
 		'Roumen\Disqus\DisqusServiceProvider',
 		'Roumen\Asset\AssetServiceProvider',
+		'Roumen\Tidyfier\TidyfierServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
 		'Greggilbert\Recaptcha\RecaptchaServiceProvider',
 		'Mews\Purifier\PurifierServiceProvider',
@@ -215,6 +216,7 @@ return [
 		'Carbon'        	=> 'Carbon\Carbon',
 		'Asset' 		  	=> 'Roumen\Asset\Asset',
 		'Feed'			 	=> 'Roumen\Feed\Facades\Feed',
+		'Tidyfier' 		  	=> 'Roumen\Tidyfier\Tidyfier',
 		'Recaptcha' 		=> 'Greggilbert\Recaptcha\Facades\Recaptcha',
 		'Purifier'		  	=> 'Mews\Purifier\Facades\Purifier'
 	],
