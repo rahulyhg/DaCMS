@@ -12,6 +12,7 @@
 		"roumen/sitemap": "2.5.*",
 		"roumen/feed": "2.9.*",
 		"roumen/disqus": "dev-master",
+		"roumen/tidyfier": "dev-master",
 		"mews/purifier": "~2.0",
 		"greggilbert/recaptcha": "dev-master"
 	},
