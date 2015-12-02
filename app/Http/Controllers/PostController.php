@@ -30,7 +30,7 @@ class PostController extends Controller
 
         // meta
         $meta['title'] = 'Blog';
-        $meta['canonical'] = env('APP_URL').'blog/';
+        $meta['canonical'] = secure_url('blog');
         $meta['robots'] = 'index,follow,noodp,noydir';
         $meta['description'] = 'Blog page';
         $meta['keywords'] = 'blog';
@@ -68,7 +68,7 @@ class PostController extends Controller
 
         // meta
         $meta['title'] = $post->title;
-        $meta['canonical'] = env('APP_URL').'blog/'.$post->slug;
+        $meta['canonical'] = secure_url('blog/'.$post->slug);
         $meta['robots'] = $post->robots;
         $meta['description'] = $post->description;
         $meta['keywords'] = $post->keywords;
@@ -101,7 +101,7 @@ class PostController extends Controller
 
         // meta
         $meta['title'] = 'Search results';
-        $meta['canonical'] = env('APP_URL').'blog/';
+        $meta['canonical'] = secure_url('search');
         $meta['robots'] = 'index,follow,noodp,noydir';
         $meta['description'] = 'Blog page';
         $meta['keywords'] = 'blog';

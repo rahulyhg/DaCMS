@@ -35,7 +35,7 @@ class UserController extends Controller
 
         // meta
         $meta['title'] = 'Profile of user: '.$user->username;
-        $meta['canonical'] = env('APP_URL').'user/'.$id;
+        $meta['canonical'] = secure_url('user/'.$id);
         $meta['description'] = 'Profile of user: '.$user->username;
         $meta['keywords'] = ''.$user->username;
 

@@ -21,8 +21,8 @@ class AdminController extends Controller
 
     public function getIndex()
     {
-        $meta['title'] = 'Admin | Roumen.IT';
-        $meta['canonical'] = 'http://roumen.it/admin';
+        $meta['title'] = 'Admin panel';
+        $meta['canonical'] = secure_url('admin');
         $meta['robots'] = 'noindex';
         $meta['description'] = 'Admin panel';
 
@@ -45,7 +45,7 @@ class AdminController extends Controller
         // get disqus
         require_once(base_path().'/config/_private.php');
 
-        $meta['title'] = 'Disqus sync | Roumen.IT';
+        $meta['title'] = 'Disqus sync';
 
         $disqus = new Disqus(getDisqusKey());
         $disqus->setSecure(false);

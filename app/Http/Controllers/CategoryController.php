@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
         // meta
         $meta['title'] = "Category: " . $category->name;
-        $meta['canonical'] = env('APP_URL').'category/'.$category->slug;
+        $meta['canonical'] = secure_url('category/'.$category->slug);
         $meta['description'] = 'Posts from category ' . $category->name;;
         $meta['keywords'] = 'posts, category, ' . $category->name;
 

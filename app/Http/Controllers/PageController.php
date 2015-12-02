@@ -34,7 +34,14 @@ class PageController extends Controller
 
         if (empty($page)) return view('errors.404'); // not found
 
-        return view('page.view')->with('page',$page);
+        //meta
+        $meta['title'] = $page->title;
+        $meta['description'] = $page->description;
+        $meta['keywords'] = $page->keywords;
+        $meta['canonical'] = ($slug!='home') ? secure_url($page->slug) : secure_url('');
+        $meta['robots'] = $page->robots;
+
+        return view('page.view')->with('page', $page)->with('meta', $meta);
     }
 
 

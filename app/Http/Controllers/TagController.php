@@ -24,7 +24,7 @@ class TagController extends Controller
     public function getIndex()
     {
         $meta['title'] = 'Tag list | Roumen.IT';
-        $meta['canonical'] = 'http://roumen.it/tag';
+        $meta['canonical'] = secure_url('tags');
         $meta['keywords'] = 'tag list, tags';
         $meta['description'] = 'List of all popular tags that have been used in this website.';
         $meta['robots'] = 'noindex';
@@ -42,7 +42,7 @@ class TagController extends Controller
 
         $meta['title'] = 'Tag: ' . $tag->name;
         $meta['description'] = 'List of posts and projects with tag: ' . $tag->name;
-        $meta['canonical'] = env('APP_URL') . $tag->slug;
+        $meta['canonical'] = secure_url('tag/'.$tag->slug);
         $meta['keywords'] = 'tag, ' . $tag->slug;
         $meta['robots'] = 'index,follow';
 
