@@ -5,11 +5,10 @@ use Config;
 
 class Tag extends Model
 {
-
-
     protected $table = 'tags';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    public $incrementing = false;
 
 
     public function posts()

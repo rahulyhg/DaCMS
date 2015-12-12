@@ -8,6 +8,7 @@ class Comment extends Model
     protected $table = 'comments';
     protected $primaryKey = 'slug';
     public $timestamps = false;
+    public $incrementing = false;
 
 
     public function post()

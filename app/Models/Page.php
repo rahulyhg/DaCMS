@@ -7,6 +7,7 @@ class Page extends Model
 
     protected $table = 'pages';
     public $timestamps = false;
+    public $incrementing = false;
 
 
     public function user()
