@@ -6,7 +6,7 @@
 */
 
 // dacms.co or dacms.dev
-Route::group(array('domain' => env('APP_DOMAIN')), function()
+Route::group(array('domain' => Config::get('app.domain')), function()
 {
 
 // HomeController
@@ -14,6 +14,7 @@ Route::get('contact', 'HomeController@getContact');
 Route::post('contact', 'HomeController@postContact');
 Route::get('feed', 'HomeController@getFeed');
 Route::get('sitemap', 'HomeController@getSitemap');
+Route::get('sitemap2', 'HomeController@getSitemap2');
 Route::get('disqus2db', 'HomeController@getDisqus2db');
 
 // UserCotroller
