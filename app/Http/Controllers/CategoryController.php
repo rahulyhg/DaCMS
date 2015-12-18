@@ -8,6 +8,7 @@ use Asset;
 use Redirect;
 use Validator;
 use Input;
+use Config;
 
 class CategoryController extends Controller
 {

@@ -7,6 +7,7 @@ use Auth;
 use Redirect;
 use Validator;
 use Input;
+use Config;
 
 class TagController extends Controller
 {

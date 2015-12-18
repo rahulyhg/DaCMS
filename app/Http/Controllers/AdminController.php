@@ -7,6 +7,7 @@ use Session;
 use Validator;
 use Input;
 use Disqus;
+use Config;
 
 class AdminController extends Controller
 {

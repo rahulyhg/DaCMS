@@ -15,6 +15,7 @@ use Input;
 use Purifier;
 use Mail;
 use Session;
+use Config;
 
 class UserController extends Controller
 {
@@ -175,7 +176,7 @@ class UserController extends Controller
 
         // meta
         $meta['title'] = 'Dashboard';
-        $meta['canonical'] = env('APP_URL').'dashboard';
+        $meta['canonical'] = Config::get('app.url').'dashboard';
         $meta['description'] = '';
         $meta['keywords'] = '';
 
@@ -193,7 +194,7 @@ class UserController extends Controller
         if (Auth::check()) return Redirect::secure('/');
 
         $meta['title'] = 'Login form';
-        $meta['canonical'] = env('APP_URL').'login';
+        $meta['canonical'] = Config::get('app.url').'login';
         $meta['robots'] = 'noindex';
 
         return view('user.login')->with('meta', $meta);

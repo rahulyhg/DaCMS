@@ -10,6 +10,7 @@ use Asset;
 use Redirect;
 use Validator;
 use Input;
+use Config;
 
 class PostController extends Controller
 {

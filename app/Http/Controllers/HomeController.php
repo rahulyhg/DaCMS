@@ -14,6 +14,7 @@ use Input;
 use Purifier;
 use Mail;
 use Session;
+use Config;
 
 class HomeController extends Controller
 {
@@ -31,7 +32,7 @@ class HomeController extends Controller
     {
         //meta
         $meta['title'] = 'Contact form';
-        $meta['canonical'] = env('APP_URL').'/contact';
+        $meta['canonical'] = Config::get('app.url').'/contact';
         $meta['robots'] = 'noindex';
 
         // assets
@@ -141,6 +142,44 @@ class HomeController extends Controller
     }
 
 
+    public function getSitemap2()
+    {
+        $s2 = App::make("sitemap");
+
+        $s2->model->setUseLimitSize(false);
+        $s2->model->setUseCache(false);
+
+        $counter = 0;
+        $key = 0;
+
+        // 1M+ items
+        for ($i=0; $i < 100100; $i++)
+        {
+            if ($counter < 50000)
+            {
+                $s2->add(secure_url('/'.$i),'2015-12-12T20:00:00+02:00','1.0','weekly');
+                $counter++;
+            }
+            else
+            {
+                $counter = 0;
+                $s2->store('xml','sitemap-'.$key);
+                $s2->model->resetItems();
+                $s2->addSitemap(secure_url('sitemap-'.$key.'.xml'));
+                $key++;
+            }
+        }
+
+        if (!empty($s2->model->getItems()))
+        {
+            $s2->store('xml','sitemap-'.$key);
+            $s2->addSitemap(secure_url('sitemap-'.$key.'.xml'));
+            $s2->model->resetItems();
+        }
+
+        $s2->store('sitemapindex','sitemapIndex');
+    }
+
 
     public function getFeed()
     {
@@ -156,9 +195,9 @@ class HomeController extends Controller
 
             $feed->title = 'Latest posts';
             $feed->description = 'DaCMS blog feed';
-            $feed->link = env('APP_URL');
-            $feed->logo = env('APP_URL') . 'favicon.png';
-            $feed->icon = env('APP_URL') . 'favicon.png';
+            $feed->link = Config::get('app.url');
+            $feed->logo = Config::get('app.url') . '/favicon.png';
+            $feed->icon = Config::get('app.url') . '/favicon.png';
             $feed->pubdate = $posts[0]->created_at;
             $feed->lang = 'en';
             $feed->setDateFormat('datetime');
