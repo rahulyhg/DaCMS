@@ -1,26 +1,24 @@
 <?php
 
 // language
-$lang = env('APP_LOCALE');
+$lang = Config::get('app.locale');
 
 // meta
 if (!isset($meta['title'])) $meta['title']="Homepage";
 if (!isset($meta['description'])) $meta['description']="A very simple CMS build with Laravel and Bootstrap.";
 if (!isset($meta['keywords'])) $meta['keywords']="dacms, cms, laravel, bootstrap";
 if (!isset($meta['robots'])) $meta['robots']="index, follow, noodp, noydir";
-if (!isset($meta['canonical'])) $meta['canonical']=env('APP_URL');
+if (!isset($meta['canonical'])) $meta['canonical']=Config::get('app.url');
 
 // assets
 //if (!App::environment('local')) { Asset::$secure=true; }
 
-//Asset::setDomain('https://cdn.roumen.it/dacms/');
 Asset::add('https://cdn.roumen.it/repo/bootstrap/*/css/bootstrap.min.css');
 Asset::add(secure_url('css/blog.css?'));
-
 Asset::add('https://cdn.roumen.it/repo/jquery/jquery-*.min.js');
 Asset::add('https://cdn.roumen.it/repo/bootstrap/*/js/bootstrap.min.js');
 Asset::add(secure_url('js/main.js?'));
-//Asset::add('https://cdn.roumen.it/repo/snowstorm/snowstorm-min.js');
+Asset::add('https://cdn.roumen.it/repo/snowstorm/snowstorm-min.js');
 
 // data
 // TODO caching
@@ -137,23 +135,23 @@ $authors = \App\User::get();
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled">
-                            @define $c=1
+                            <?php $c=1; ?>
                             @foreach ($categories as $category)
                             @if ($c % 2 == 0)
                             <li><a href="{{secure_url('/category/'.$category->slug)}}">{{ $category->name }}</a> ({{ count($category->posts) }})
                             @endif
-                            @define $c++
+                            <?php $c++; ?>
                             @endforeach
                             </ul>
                         </div>
                         <div class="col-lg-6">
                             <ul class="list-unstyled">
-                            @define $c=2
+                            <?php $c=2; ?>
                             @foreach ($categories as $category)
                             @if ($c % 2 == 0)
                             <li><a href="{{secure_url('/category/'.$category->slug)}}">{{ $category->name }}</a> ({{ count($category->posts) }})
                             @endif
-                            @define $c++
+                            <?php $c++; ?>
                             @endforeach
                             </ul>
                         </div>
@@ -226,11 +224,16 @@ $authors = \App\User::get();
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-xs-3">
-                        <p class="text-left">Copyright &copy; 2015-2016, <a href="{{ env('APP_URL') }}">{{ env('APP_DOMAIN') }}</a>.</p>
+                    <div class="col-xs-5">
+                        <p class="text-left">
+                            Copyright &copy; 2015-2016, <a href="{{ Config::get('app.url') }}">{{ Config::get('app.domain') }}</a>.
+                            Powered by <a rel="self" href="https://dacms.co">DaCMS</a> and <a href="https://cdn.roumen.it/" target="_blank" title="Content Delivery Network">CDN</a>.
+                            </p>
                     </div>
-                    <div class="col-xs-3 col-xs-push-6">
-                        <p class="text-right">Powered by <a href="https://dacms.co">DaCMS</a>.</p>
+                    <div class="col-xs-3 col-xs-push-4">
+                        <p class="text-right">
+                            Created by <a href="https://roumen.it" target="_blank" title="Roumen Damianoff" rel="webmaster">Roumen</a>.
+                        </p>
                     </div>
                 </div>
             </div>
