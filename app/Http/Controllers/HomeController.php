@@ -100,7 +100,7 @@ class HomeController extends Controller
 
         $sitemap = App::make("sitemap");
 
-        $sitemap->setCache('dacms-sitemap', 1);
+        $sitemap->setCache('dacms-sitemap', 180);
 
         if (!$sitemap->isCached())
         {

@@ -9,7 +9,7 @@
 		"laravelcollective/html": "~5",
 		"predis/predis": "~1.1@dev",
 		"roumen/asset": "2.5.*",
-		"roumen/sitemap": "2.5.*",
+		"roumen/sitemap": "2.6.*",
 		"roumen/feed": "2.9.*",
 		"roumen/disqus": "dev-master",
 		"roumen/tidyfier": "dev-master",
