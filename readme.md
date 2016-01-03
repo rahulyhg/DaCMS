@@ -1,8 +1,22 @@
 ## [DaCMS](https://dacms.co)
 
-CMS build with Laravel and Bootstrap.
+[Demo] CMS build with Laravel and Bootstrap.
 
 **NOT meant for production use!**
+
+
+### Installation ###
+
+* `git clone https://github.com/DaCMS/DaCMS.git projectname`
+* `cd projectname`
+* `composer install`
+* create a database and edit your *.env* file (remove *.example*)
+* `php artisan migrate` to create tables
+* `php artisan db:seed` to populate tables
+* `php artisan vendor:publish` to publish all vendors assets
+* start developing your project on the base of this simple installation
+* if you find a bug, please report it (and maybe make a new PR).
+
 
 ## Credits
 
