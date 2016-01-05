@@ -1,11 +1,11 @@
 ## [DaCMS](https://dacms.co)
 
-[Demo] CMS build with Laravel and Bootstrap.
+CMS build with Laravel and Bootstrap.
 
 **NOT meant for production use!**
 
 
-### Installation ###
+## Installation ##
 
 * `git clone https://github.com/DaCMS/DaCMS.git projectname`
 * `cd projectname`
@@ -18,10 +18,16 @@
 * if you find a bug, please report it (and maybe make a new PR).
 
 
+## License ##
+
+This is free software distributed under the terms of the MIT license.
+
+
 ## Credits
 
 - [Laravel](https://laravel.com)
-
+- [Bootstrap](https://getbootstrap.com)
+- [JQuery](https://jquery.com)
 - [Composer](https://getcomposer.com) packages:
   - [laravel-assets](https://github.com/RoumenDamianoff/laravel-assets)
   - [laravel-sitemap](https://github.com/RoumenDamianoff/laravel-sitemap)
@@ -32,7 +38,3 @@
   - [laravelcollective-html](https://github.com/LaravelCollective/html)
   - [mews-purifier](https://github.com/mewebstudio/Purifier)
   - [greggilbert-recaptcha](https://github.com/greggilbert/recaptcha)
-
-- [Bootstrap](https://getbootstrap.com)
-
-- [JQuery](https://jquery.com)
