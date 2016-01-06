@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('users')->insert(
+        	[
+	            'name' => 'admin',
+	            'email' => 'admin@dacms.co',
+	            'password' => bcrypt('admin'),
+	            'first_name' => 'Admin',
+	            'last_name' => 'Adminoff',
+	            'isActive' => 1,
+	            'id' => 1
+        	],
+        	[
+	            'name' => 'demo',
+	            'email' => 'demo@dacms.co',
+	            'password' => bcrypt('demo'),
+	            'first_name' => 'Demo',
+	            'last_name' => 'Demoff',
+	            'isActive' => 1,
+	            'id' => 2
+        	],
+        );
+    }
+}
