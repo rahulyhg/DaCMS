@@ -11,7 +11,7 @@ class UsergroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('usergroups')->insert(
+        DB::table('usergroups')->insert([
         	[
 	            'name' => 'admins',
 	            'id' => 1
@@ -28,6 +28,18 @@ class UsergroupsTableSeeder extends Seeder
 	            'name' => 'users',
 	            'id' => 4
         	],
-        );
+        ]);
+
+        // users to usergroups
+        DB::table('users_to_usergroups')->insert([
+        	[
+	            'user_id' => 1,
+	            'usergroup_id' => 1,
+        	],
+        	[
+	            'user_id' => 2,
+	            'usergroup_id' => 4,
+        	]
+        ]);
     }
 }
