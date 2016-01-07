@@ -11,7 +11,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tags')->insert(
+        DB::table('tags')->insert([
         	[
 	            'name' => 'DaCMS',
 	            'slug' => 'dacms',
@@ -32,6 +32,6 @@ class TagsTableSeeder extends Seeder
 	            'slug' => 'bootstrap',
 	            'id' => 4
         	],
-        );
+        ]);
     }
 }
