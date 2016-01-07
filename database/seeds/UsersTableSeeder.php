@@ -11,9 +11,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert(
+        DB::table('users')->insert([
         	[
-	            'name' => 'admin',
+	            'username' => 'admin',
 	            'email' => 'admin@dacms.co',
 	            'password' => bcrypt('admin'),
 	            'first_name' => 'Admin',
@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 	            'id' => 1
         	],
         	[
-	            'name' => 'demo',
+	            'username' => 'demo',
 	            'email' => 'demo@dacms.co',
 	            'password' => bcrypt('demo'),
 	            'first_name' => 'Demo',
@@ -30,6 +30,6 @@ class UsersTableSeeder extends Seeder
 	            'isActive' => 1,
 	            'id' => 2
         	],
-        );
+        ]);
     }
 }
