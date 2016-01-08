@@ -11,7 +11,7 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-    	DB::table('categories')->insert(
+    	DB::table('categories')->insert([
         	[
 	            'name' => 'General',
 	            'slug' => 'general',
@@ -35,8 +35,13 @@ class CategoriesTableSeeder extends Seeder
         	[
 	            'name' => 'Videos',
 	            'slug' => 'videos',
-	            'id' => 4
+	            'id' => 5
         	],
-        );
+        	[
+	            'name' => 'Pictures',
+	            'slug' => 'pictures',
+	            'id' => 6
+        	],
+        ]);
     }
 }
