@@ -32,7 +32,7 @@ class UserController extends Controller
     public function getView($id)
     {
         $user = User::where('id','=', $id)->first();
-        if (empty($user)) return view('errors.404'); // not found
+        if (empty($user)) return abort('404'); // not found
 
         // meta
         $meta['title'] = 'Profile of user: '.$user->username;

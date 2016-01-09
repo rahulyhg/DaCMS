@@ -64,8 +64,8 @@ class PostController extends Controller
 
         // check for problems
         if (empty($post)) $post = Post::where('slug','=',$slug)->first(); // wrong language
-        if (empty($post)) return view('errors.404'); // not found
-        if ( ($post->isVisible != 1) && ( (!Auth::user()) || (Auth::user()->id != $post->user_id) ) ) return view('errors.403'); // draft
+        if (empty($post)) return abort('404'); // not found
+        if ( ($post->isVisible != 1) && ( (!Auth::user()) || (Auth::user()->id != $post->user_id) ) ) return abort('403'); // draft
 
         // meta
         $meta['title'] = $post->title;

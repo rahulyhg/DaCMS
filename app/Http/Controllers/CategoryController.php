@@ -32,7 +32,7 @@ class CategoryController extends Controller
         $authors = User::take(10)->get();
 
         // check for problems
-        if (empty($category)) return view('errors.404'); // not found
+        if (empty($category)) return abort('404'); // not found
 
         // meta
         $meta['title'] = "Category: " . $category->name;

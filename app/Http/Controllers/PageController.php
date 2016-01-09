@@ -33,7 +33,7 @@ class PageController extends Controller
     {
         $page = Page::where('slug','=',$slug)->first();
 
-        if (empty($page)) return view('errors.404'); // not found
+        if (empty($page)) return abort('404'); // not found
 
         //meta
         $meta['title'] = $page->title;

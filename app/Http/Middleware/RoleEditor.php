@@ -17,7 +17,7 @@ class RoleEditor
 
 		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin', 'moderator', 'editor']) )
 		{
-			return view('errors.403');
+			return abort('403');
 		}
 
 		return $next($request);

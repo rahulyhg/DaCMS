@@ -24,7 +24,7 @@ class TagController extends Controller
 
     public function getIndex()
     {
-        $meta['title'] = 'Tag list | Roumen.IT';
+        $meta['title'] = 'Tag list';
         $meta['canonical'] = secure_url('tags');
         $meta['keywords'] = 'tag list, tags';
         $meta['description'] = 'List of all popular tags that have been used in this website.';
@@ -39,7 +39,7 @@ class TagController extends Controller
     {
 
         $tag = Tag::where('slug','=',$slug)->first();
-        if (empty($tag)) return view('errors.404');
+        if (empty($tag)) return abort('403');
 
         $meta['title'] = 'Tag: ' . $tag->name;
         $meta['description'] = 'List of posts and projects with tag: ' . $tag->name;

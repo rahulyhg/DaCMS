@@ -17,7 +17,7 @@ class RoleAuthor
 
 		if ($request->input('id') != \Auth::user()->id)
 		{
-            return view('errors.403');
+            return abort('403');
         }
 
 		return $next($request);

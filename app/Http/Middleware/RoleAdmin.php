@@ -17,7 +17,7 @@ class RoleAdmin
 
 		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin']) )
 		{
-			return view('errors.403');
+			return abort('403');
 		}
 
 		return $next($request);
