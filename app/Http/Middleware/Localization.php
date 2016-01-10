@@ -34,7 +34,7 @@ class Localization {
 		}
 
 		// set cookie
-		setcookie("lang", $lang, time()+3600*24*365, '/');
+		@setcookie("lang", $lang, time()+3600*24*365, '/');
 
 		// set locale
 		App::setLocale($lang);
