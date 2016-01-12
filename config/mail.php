@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'no-reply@dawebsite.dev', 'name' => 'DaWebsite'],
+	'from' => ['address' => 'no-reply@dacms.co', 'name' => 'DaCMS'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -81,6 +81,9 @@ return [
 	*/
 
 	'username' => env('MAIL_USERNAME'),
+
+	/* contact form address */
+	'contactform' => env('MAIL_CONTACTFORM'),
 
 	/*
 	|--------------------------------------------------------------------------
