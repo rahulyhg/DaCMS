@@ -59,15 +59,13 @@ class HomeController extends Controller
 						'email' => strip_tags(Purifier::clean(Input::get('email')))
 					];
 
-		   /* Mail::send('emails.contact', $data, function($message)
+		   Mail::send('emails.contact', $data, function($message)
 			{
-				$message->from('no-reply@dawebs.com', strip_tags(Purifier::clean(Input::get('name'))));
+				$message->from(Config::get('mail.username'), strip_tags(Purifier::clean(Input::get('name'))));
 				$message->replyTo(strip_tags(Purifier::clean(Input::get('email'))), strip_tags(Purifier::clean(Input::get('name'))));
-				$message->to('nospam@roumen.it');
+				$message->to(Config::get('mail.contactform'));
 				$message->subject(strip_tags(Purifier::clean(Input::get('subject'))));
 			});
-
-			*/
 
 			Session::flash('sended', 'true');
 
