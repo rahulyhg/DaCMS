@@ -3,10 +3,6 @@
 /nbproject
 /config/_*.php
 /bootstrap/compiled.php
-/storage/app/*
-/storage/framework/*
-/storage/logs/*
-/resources/views/vendor/*
 ftpsync.settings
 composer.phar
 composer.lock
