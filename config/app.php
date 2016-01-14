@@ -154,6 +154,7 @@ return [
 		Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 		Mews\Purifier\PurifierServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+		Barryvdh\Debugbar\ServiceProvider::class,
 
 	],
 
@@ -211,7 +212,8 @@ return [
 		'Asset' 		  	=> Roumen\Asset\Asset::class,
 		'Feed'			 	=> Roumen\Feed\Facades\Feed::class,
 		'Recaptcha' 		=> Greggilbert\Recaptcha\Facades\Recaptcha::class,
-		'Purifier'		  	=> Mews\Purifier\Facades\Purifier::class
+		'Purifier'		  	=> Mews\Purifier\Facades\Purifier::class,
+		'Debugbar' 			=> Barryvdh\Debugbar\Facade::class
 	],
 
 ];
