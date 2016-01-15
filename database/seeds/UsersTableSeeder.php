@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
 	            'password' => bcrypt('admin'),
 	            'first_name' => 'Admin',
 	            'last_name' => 'Adminoff',
+	            'role' => 9,
 	            'isActive' => 1,
 	            'id' => 1
         	],
@@ -27,6 +28,7 @@ class UsersTableSeeder extends Seeder
 	            'password' => bcrypt('demo'),
 	            'first_name' => 'Demo',
 	            'last_name' => 'Demoff',
+	            'role' => 1,
 	            'isActive' => 1,
 	            'id' => 2
         	],
