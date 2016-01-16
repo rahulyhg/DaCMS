@@ -15,7 +15,7 @@ class RoleEditor
 	public function handle($request, Closure $next)
 	{
 
-		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin', 'moderator', 'editor']) )
+		if ( \Auth::check() && \Auth::user()->role > 5  )
 		{
 			return abort('403');
 		}

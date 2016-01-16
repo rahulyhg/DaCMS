@@ -15,7 +15,7 @@ class RoleModerator
 	public function handle($request, Closure $next)
 	{
 
-		if (!in_array(\Auth::user()->role(\Auth::user()->id), ['owner', 'admin', 'moderator']) )
+		if ( \Auth::check() && \Auth::user()->role > 6 )
 		{
 			return abort('403');
 		}
