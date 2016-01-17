@@ -34,12 +34,16 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 	Route::post('login', 'UserController@postLogin');
 	Route::get('logout', 'UserController@getLogout');
 
-	Route::group( [ 'middleware' => [ 'auth', 'moderator' ] ], function ()
+	Route::group( [ 'middleware' => 'auth' ], function ()
+	{
+		Route::get('user/edit/{id}', 'UserController@getEdit');
+		Route::post('user/edit/{id}', 'UserController@postEdit');
+	});
+
+	Route::group( [ 'middleware' => [ 'auth', 'admin' ] ], function ()
 	{
 		Route::get('user/add', 'UserController@getCreate');
 		Route::post('user/add', 'UserController@postCreate');
-		Route::get('user/edit/{id}', 'UserController@getEdit');
-		Route::post('user/edit/{id}', 'UserController@postEdit');
 		Route::get('user/del/{id}', 'UserController@getDelete');
 		Route::post('user/del/{id}', 'UserController@postDelete');
 	});
@@ -53,12 +57,12 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 
 
 	// PostController
-	Route::group( [ 'middleware' => [ 'auth', 'editor' ] ], function ()
+	Route::group( [ 'middleware' => 'auth' ], function ()
 	{
 		Route::get('blog/add', 'PostController@getCreate');
 		Route::post('blog/add', 'PostController@postCreate');
-		Route::get('blog/edit/{id}', 'PostController@getEdit');
-		Route::post('blog/edit/{id}', 'PostController@postEdit');
+		Route::get('blog/edit/{id}', 'PostController@getUpdate');
+		Route::post('blog/edit/{id}', 'PostController@postUpdate');
 		Route::get('blog/del/{id}', 'PostController@getDelete');
 		Route::post('blog/del/{id}', 'PostController@postDelete');
 	});
