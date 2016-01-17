@@ -1,10 +1,27 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Blog <small>latest posts</small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Blog';
+$layout->robots = 'all';
+$layout->description = 'Blog index with latest posts.';
+$layout->keywords = 'blog, dacms';
+$layout->canonical = secure_url('blog');
+?>
+@endsection
+
+@section('assets')
+<?php
+// blog js
+Asset::add(secure_url('js/blog.js'));
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">Blog <small>latest posts</small></h1>
+
 <!-- foreach posts -->
 @foreach ($posts as $post)
 <h2><a href="{{secure_url('/blog/'.$post->slug)}}">{{ $post->title }}</a></h2>
@@ -28,8 +45,8 @@
 	</div>
 	<div class="col-xs-3 col-xs-push-1">
 		<p class=" text-right">
-			<span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->user->id)}}">{{ $post->user->username }}</a>
-            @if (Auth::check() && in_array(Auth::user()->role(Auth::user()->id), ['admin', 'moderator', 'editor']))
+			<span class="glyphicon glyphicon-user"></span> <a href="{{secure_url('/user/'.$post->author->id)}}">{{ $post->author->username }}</a>
+            @if ($authUser && $authUser->role > 5)
             <span class="glyphicon glyphicon-pencil"></span> <a href="{{secure_url('/blog/edit/'.$post->id)}}">Edit</a>
             @endif
 		</p>

@@ -1,10 +1,24 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Edit <small><a href="{{secure_url('blog/'.$post->slug)}}">{{$post->title}}</a></small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Update: '.$post->title;
+?>
+@endsection
+
+@section('assets')
+<?php
+$s = "$('#deleteBtn').click(function(){window.location = '".secure_url('/blog/del/'.$post->id)."';})";
+Asset::add(secure_url('/tinymce/4.3.3/tinymce.min.js'), 'header');
+Asset::add(secure_url('/js/tinymce.js'), 'header');
+Asset::addScript($s,'ready');
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">Update: <small><a href="{{secure_url('blog/'.$post->slug)}}">{{$post->title}}</a></small></h1>
 
 {!! Form::open(array('url'=>secure_url('/blog/edit/'.$post->id), 'class'=>'form-horizontal')) !!}
 

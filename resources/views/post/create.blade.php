@@ -1,10 +1,22 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Create post</h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Create new post';
+?>
+@endsection
+
+@section('assets')
+<?php
+Asset::add(secure_url('/tinymce/4.3.3/tinymce.min.js'), 'header');
+Asset::add(secure_url('/js/tinymce.js'), 'header');
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">Create new post</h1>
 
 {!! Form::open(array('url'=>secure_url('/blog/add'), 'class'=>'form-horizontal')) !!}
 
@@ -26,7 +38,6 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::label('post_content', 'Content') !!} {!! Form::textarea('post_content', Input::get('post_content')) !!}
@@ -35,7 +46,6 @@
 		@endif
 		</div>
 	</div>
-
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -46,7 +56,6 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::label('description', 'Description') !!} {!! Form::text('description', Input::get('description')) !!}
@@ -55,7 +64,6 @@
 		@endif
 		</div>
 	</div>
-
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -66,14 +74,12 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::label('robots', 'Robots') !!}
 			{!! Form::select('robots', array('all' => 'all', 'noindex' => 'noindex', 'nofollow'=>'nofollow'), Input::get('robots')) !!}
 		</div>
 	</div>
-
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -82,14 +88,12 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::label('comments', 'Comments') !!}
 			{!! Form::select('comments', array('1' => 'On', '0' => 'Off'), Input::get('comments')) !!}
 		</div>
 	</div>
-
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -98,7 +102,6 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::label('lang', 'Lang') !!}
@@ -106,12 +109,13 @@
 		</div>
 	</div>
 
-
 	<div class="form-group">
 		<div class="col-sm-8">
 			{!! Form::submit('Create!',array('class'=>'btn-primary btn', 'type'=>'submit')) !!}
 		</div>
 	</div>
+
+	<input type="hidden" name="user_id" value="{{$authUser->id}}">
 
 {!! Form::close() !!}
 
