@@ -10,12 +10,9 @@ class Tag extends Model
     public $timestamps = false;
     public $incrementing = false;
 
-
     public function posts()
     {
       return $this->belongsToMany('App\Post', 'tags_to_posts', 'tag_id', 'post_id')->whereIn('isVisible', array('1','2'))->orderBy('created_at','desc');
     }
-
-
 
 }

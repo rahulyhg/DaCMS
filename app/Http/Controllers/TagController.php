@@ -27,7 +27,7 @@ class TagController extends Controller
 	public function getView($slug=null)
 	{
 
-		$tag = Tag::where('slug','=',$slug)->first();
+		$tag = Tag::where('slug','=',$slug)->with('posts')->first();
 		if (empty($tag)) return abort('403');
 
 		$meta['title'] = 'Tag: ' . $tag->name;
