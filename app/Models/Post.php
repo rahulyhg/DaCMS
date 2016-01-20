@@ -52,7 +52,7 @@ class Post extends Model
         $rules = [
                 'title'  => 'required|min:3|max:80',
                 'slug' => 'required|min:3',
-                'post_content'  => 'required|min:15',
+                'content'  => 'required|min:15',
                 'resume'  => 'required|min:15',
                 'description'  => 'required|min:10|max:180',
                 'keywords' => 'required|min:3|max:90'
@@ -65,7 +65,7 @@ class Post extends Model
             $data = [
                'title' => $input['title'],
                'slug' => $input['slug'],
-               'content' => $input['post_content'],
+               'content' => $input['content'],
                'resume' => $input['resume'],
                'description' => $input['description'],
                'keywords' => $input['keywords'],
@@ -77,7 +77,7 @@ class Post extends Model
             ];
 
             // update post
-            self::where('id','=',$id)->update($data);
+            static::where('id','=',$id)->update($data);
 
             // redirect to post
             return Redirect::secure('blog/'.$input['slug']);
@@ -100,7 +100,7 @@ class Post extends Model
         $rules = [
                 'title'  => 'required|min:3|max:80',
                 'slug' => 'required|min:3',
-                'post_content'  => 'required|min:15',
+                'content'  => 'required|min:15',
                 'resume'  => 'required|min:15',
                 'description'  => 'required|min:10|max:180',
                 'keywords' => 'required|min:3|max:90'
@@ -113,7 +113,7 @@ class Post extends Model
             $data = [
                'title' => $input['title'],
                'slug' => $input['slug'],
-               'content' => $input['post_content'],
+               'content' => $input['content'],
                'resume' => $input['resume'],
                'description' => $input['description'],
                'keywords' => $input['keywords'],
@@ -125,7 +125,7 @@ class Post extends Model
                'user_id' => $input['user_id']
             ];
 
-            self::insert($data);
+            static::insert($data);
 
             return Redirect::secure('/blog/'.$input['slug']);
         }
@@ -147,7 +147,7 @@ class Post extends Model
         if ($input['confirm'] == true)
         {
             // delete post
-            self::where('id','=',$id)->delete();
+            static::where('id','=',$id)->delete();
 
             return Redirect::secure('/blog');
         }
