@@ -15,7 +15,7 @@ class RoleEditor
 	public function handle($request, Closure $next)
 	{
 
-		if ( \Auth::check() && \Auth::user()->role > 5  )
+		if ( \Auth::check() && \Auth::user()->role < 5  )
 		{
 			return abort('403');
 		}

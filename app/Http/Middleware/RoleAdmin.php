@@ -15,7 +15,7 @@ class RoleAdmin
 	public function handle($request, Closure $next)
 	{
 
-		if ( \Auth::check() && \Auth::user()->role > 7 )
+		if ( \Auth::check() && \Auth::user()->role < 7 )
 		{
 			return abort('403');
 		}
