@@ -42,7 +42,7 @@ Asset::addScript($s,'ready');
 
 	<div class="form-group">
 		<div class="col-sm-8">
-			{!! Form::label('post_content', 'Content') !!} {!! Form::textarea('post_content', $post->content) !!}
+			{!! Form::label('content', 'Content') !!} {!! Form::textarea('content', $post->content) !!}
 		@if (isset($errors))
 			{!! $errors->first('page_content','<span class="error">:message</span>') !!}
 		@endif

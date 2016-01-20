@@ -40,7 +40,7 @@ Asset::add(secure_url('/js/tinymce.js'), 'header');
 
 	<div class="form-group">
 		<div class="col-sm-8">
-			{!! Form::label('post_content', 'Content') !!} {!! Form::textarea('post_content', Input::get('post_content')) !!}
+			{!! Form::label('post_content', 'Content') !!} {!! Form::textarea('content', Input::get('content')) !!}
 		@if (isset($errors))
 			{!! $errors->first('page_content','<span class="error">:message</span>') !!}
 		@endif
