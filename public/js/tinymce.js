@@ -1,5 +1,5 @@
 tinymce.init({
-    selector: "#post_content",
+    selector: "#content",
     width: 750,
     height: 250,
     plugins: [
