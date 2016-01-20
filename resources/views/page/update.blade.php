@@ -1,10 +1,24 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Edit <small><a href="{{URL::secure($page->slug)}}">{{$page->title}}</a></small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Update: '.$page->title;
+?>
+@endsection
+
+@section('assets')
+<?php
+$s = "$('#deleteBtn').click(function(){window.location = '".secure_url('/page/del/'.$page->id)."';});";
+Asset::add(secure_url('/tinymce/4.3.3/tinymce.min.js'), 'header');
+Asset::add(secure_url('/js/tinymce.js'), 'header');
+Asset::addScript($s, 'ready');
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">Update: <small><a href="{{secure_url($page->slug)}}">{{$page->title}}</a></small></h1>
 
 {!! Form::open(array('url'=>secure_url('/page/edit/'.$page->id), 'class'=>'form-horizontal')) !!}
 
@@ -28,7 +42,7 @@
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::label('page_content', 'Content') !!} {!! Form::textarea('page_content', $page->content) !!}
+		{!! Form::label('content', 'Content') !!} {!! Form::textarea('content', $page->content) !!}
 		@if (isset($errors))
 			{!! $errors->first('page_content','<span class="error">:message</span>') !!}
 		@endif

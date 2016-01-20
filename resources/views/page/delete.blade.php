@@ -1,12 +1,17 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Delete page <small><a href="{{ secure_url('/'.$page->slug) }}">{{$page->title}}</a></small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'DELETE: '.$page->title;
+?>
 @endsection
 
 @section('content')
 
-{!! Form::open(array('url'=>secure_url('page/del/'.$page->id), 'class'=>'form-horizontal')) !!}
+<h1 class="page-header">Delete page <small><a href="{{ secure_url('/'.$page->slug) }}">{{$page->title}}</a></small></h1>
+
+{!! Form::open(['url'=>secure_url('page/del/'.$page->id), 'class'=>'form-horizontal']) !!}
 
 	<div class="form-group">
 		<div class="col-sm-8">

@@ -1,10 +1,22 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Create page</h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Create new page';
+?>
+@endsection
+
+@section('assets')
+<?php
+Asset::add(secure_url('/tinymce/4.3.3/tinymce.min.js'), 'header');
+Asset::add(secure_url('/js/tinymce.js'), 'header');
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">Create page</h1>
 
 {!! Form::open(array('url'=>secure_url('/page/add'), 'class'=>'form-horizontal')) !!}
 
@@ -28,7 +40,7 @@
 
 	<div class="form-group">
 		<div class="col-sm-8">
-			{!! Form::label('page_content', 'Content') !!} {!! Form::textarea('page_content', Input::get('content')) !!}
+			{!! Form::label('content', 'Content') !!} {!! Form::textarea('content', Input::get('content')) !!}
 		@if (isset($errors))
 			{!! $errors->first('page_content','<span class="error">:message</span>') !!}
 		@endif
@@ -76,6 +88,8 @@
 			{!! Form::submit('Create!',array('class'=>'submit		')) !!}
 		</div>
 	</div>
+
+	<input type="hidden" name="user_id" value="{{$authUser->id}}">
 
 {!! Form::close() !!}
 
