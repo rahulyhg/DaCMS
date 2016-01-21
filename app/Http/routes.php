@@ -36,8 +36,8 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 
 	Route::group( [ 'middleware' => 'auth' ], function ()
 	{
-		Route::get('user/edit/{id}', 'UserController@getEdit');
-		Route::post('user/edit/{id}', 'UserController@postEdit');
+		Route::get('user/edit/{id}', 'UserController@getUpdate');
+		Route::post('user/edit/{id}', 'UserController@postUpdate');
 	});
 
 	Route::group( [ 'middleware' => [ 'auth', 'admin' ] ], function ()
@@ -77,8 +77,8 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 	{
 		Route::get('category/add', 'CategoryController@getCreate');
 		Route::post('category/add', 'CategoryController@postCreate');
-		Route::get('category/edit/{id}', 'CategoryController@getEdit');
-		Route::post('category/edit/{id}', 'CategoryController@postEdit');
+		Route::get('category/edit/{id}', 'CategoryController@getUpdate');
+		Route::post('category/edit/{id}', 'CategoryController@postUpdate');
 		Route::get('category/del/{id}', 'CategoryController@getDelete');
 		Route::post('category/del/{id}', 'CategoryController@postDelete');
 	});
@@ -92,8 +92,8 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 	{
 		Route::get('tag/add', 'TagController@getCreate');
 		Route::post('tag/add', 'TagController@postCreate');
-		Route::get('tag/edit/{id}', 'TagController@getEdit');
-		Route::post('tag/edit/{id}', 'TagController@postEdit');
+		Route::get('tag/edit/{id}', 'TagController@getUpdate');
+		Route::post('tag/edit/{id}', 'TagController@postUpdate');
 		Route::get('tag/del/{id}', 'TagController@getDelete');
 		Route::post('tag/del/{id}', 'TagController@postDelete');
 	});
@@ -107,8 +107,8 @@ Route::group( [ 'domain' => Config::get('app.domain') ], function()
 	{
 		Route::get('page/add', 'PageController@getCreate');
 		Route::post('page/add', 'PageController@postCreate');
-		Route::get('page/edit/{id}', 'PageController@getEdit');
-		Route::post('page/edit/{id}', 'PageController@postEdit');
+		Route::get('page/edit/{id}', 'PageController@getUpdate');
+		Route::post('page/edit/{id}', 'PageController@postUpdate');
 		Route::get('page/del/{id}', 'PageController@getDelete');
 		Route::post('page/del/{id}', 'PageController@postDelete');
 	});
