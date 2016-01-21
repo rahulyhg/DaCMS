@@ -23,7 +23,7 @@ class UserController extends Controller
 
 	public function getView($id)
 	{
-		$user = User::where('id','=', $id)->first();
+		$user = User::where('id','=', $id)->with('posts')->first();
 		if (empty($user)) return abort('404'); // not found
 
 		// meta
@@ -155,7 +155,7 @@ class UserController extends Controller
 	public function getDashboard()
 	{
 		// data
-		$user = User::where('id', '=', Auth::user()->id)->first();
+		$user = User::where('id', '=', $this->authUser->id)->first();
 
 		// meta
 		$meta['title'] = 'Dashboard';
