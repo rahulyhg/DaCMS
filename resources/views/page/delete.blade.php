@@ -21,7 +21,7 @@ $layout->title = 'DELETE: '.$page->title;
 
 	<div class="form-group">
 		<div class="col-sm-8">
-			{!! Form::submit('DELETE!', array('class'=>'submit')) !!}
+			{!! Form::submit('DELETE!', ['class'=>'submit']) !!}
 		</div>
 	</div>
 
