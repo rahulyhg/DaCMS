@@ -12,146 +12,66 @@ use Config;
 class PageController extends Controller
 {
 
-
 	public function getIndex()
 	{
 		// TODO
 	}
 
-
 	public function getView($slug='home')
 	{
+		// get page by slug
 		$page = Page::where('slug','=',$slug)->first();
 
+		// if page is empty
 		if (empty($page)) return abort('404'); // not found
 
-		//meta
-		$meta['title'] = $page->title;
-		$meta['description'] = $page->description;
-		$meta['keywords'] = $page->keywords;
-		$meta['canonical'] = ($slug!='home') ? secure_url($page->slug) : secure_url('');
-		$meta['robots'] = $page->robots;
-
-		return view('page.view')->with('page', $page)->with('meta', $meta);
+		// get the view
+		return view('page.view', ['page' => $page]);
 	}
 
-
-	public function getEdit($id)
+	public function getUpdate($id)
 	{
+		// get page to edit
 		$page = Page::where('id','=',$id)->first();
 
-		$meta['title'] = 'Edit page';
+		// if page is missing redirect to blog
+		if (empty($page)) return Redirect::secure('blog');
 
-		$s1 = "$(function(){CKEDITOR.replace('page_content',{toolbar:'Standart',height:'300px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
-		$s2 = "$('#deleteBtn').click(function(){window.location = '".secure_url('/page/del/'.$id)."';});";
-
-		Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
-		Asset::addScript($s1, 'ready');
-		Asset::addScript($s2, 'ready');
-
-		return view('page.edit')->with('meta', $meta)->with('page', $page);
+		// get the view
+		return view('page.update', ['page' => $page]);
 	}
 
-
-	public function postEdit($id)
+	public function postUpdate($id)
 	{
-		$rules = [
-				'title'  => 'required|min:3|max:80',
-				'slug' => 'required|min:3',
-				'page_content'  => 'required|min:15',
-				'description'  => 'required|min:10|max:180',
-				'keywords' => 'required|min:3|max:90'
-		];
-
-		$validation = Validator::make(Input::all(), $rules);
-
-		if ($validation->passes())
-		{
-				$data = array(
-				   'title' => Input::get('title'),
-				   'slug' => Input::get('slug'),
-				   'content' => Input::get('page_content'),
-				   'description' => Input::get('description'),
-				   'keywords' => Input::get('keywords'),
-				   'robots' => Input::get('robots'),
-				   'lang' => Input::get('lang')
-				);
-
-		 Page::where('id','=',$id)->update($data);
-
-		}
-
-		return Redirect::secure('page/edit/'.$id)->withErrors($validation);
+		// update page
+		return Page::updatePage($id, Input::all());
 	}
-
 
 	public function getCreate()
 	{
-		$meta['title'] = "Create page";
-
-		Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
-		$script = "$(function(){CKEDITOR.replace('page_content',{toolbar:'Standart',height:'300px',width:'760px',toolbarCanCollapse:true,toolbarStartupExpanded:true,startupShowBorders:true});});";
-		Asset::addScript($script, 'ready');
-
-		return view('page.create')->with('meta', $meta);
+		// get the view
+		return view('page.create');
 	}
-
 
 	public function postCreate()
 	{
-		$rules = [
-				'title'  => 'required|min:3|max:80',
-				'slug' => 'required|min:3',
-				'page_content'  => 'required|min:15',
-				'description'  => 'required|min:10|max:180',
-				'keywords' => 'required|min:3|max:90'
-		];
-
-		$validation = Validator::make(Input::all(), $rules);
-
-		if ($validation->passes())
-		{
-				$data = [
-				   'title' => Input::get('title'),
-				   'slug' => Input::get('slug'),
-				   'content' => Input::get('page_content'),
-				   'description' => Input::get('description'),
-				   'keywords' => Input::get('keywords'),
-				   'robots' => Input::get('robots'),
-				   'lang' => Input::get('lang'),
-				   'user_id' => Auth::user()->id
-				];
-
-		 Page::insert($data);
-
-		 return Redirect::secure('/'.Input::get('slug'));
-
-		}
-
-		return Redirect::secure('page/add')->withErrors($validation);
+		// create new page
+		return Page::createPage(Input::all());
 	}
-
 
 	public function getDelete($id)
 	{
+		// get the page
 		$page = Page::where('id','=',$id)->first();
 
-		$meta['title'] = 'DELETE: ' . $page->title;
-
-		return view('page.delete')->with('meta', $meta)->with('page', $page);
+		// get the view
+		return view('page.delete', ['page' => $page]);
 	}
-
 
 	public function postDelete($id)
 	{
-		  if (Input::get('confirm')==true)
-		  {
-			  Page::where('id','=',$id)->delete();
-
-			  return Redirect::secure('/');
-		  }
-
-		  return Redirect::secure('page/del/'.$id);
+		// delete page
+		return Page::deletePage($id, Input::all());
 	}
 
 
