@@ -1,10 +1,24 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Contact form</h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Contact form';
+$layout->robots = 'noindex';
+$layout->canonical = secure_url('contact');
+?>
+@endsection
+
+@section('assets')
+<?php
+Asset::add(secure_url('/tinymce/4.3.3/tinymce.min.js'), 'header');
+Asset::add(secure_url('/js/tinymce.js'), 'header');
+?>
 @endsection
 
 @section('content')
+
+	<h1 class="page-header">Contact form</h1>
 
 	@if ($errors->getMessages())
 	<div class="col-sm-9 text-left">
@@ -74,14 +88,15 @@
 	@if ($errors->first('subject'))
 	<div class="form-group error">
 		<div class="col-sm-9">
-			{!! Form::textarea('message',Input::old('message'),array('rows' => '3'),array('class'=>'input-xlarge error','placeholder'=>'Message')) !!}
+			{!! Form::textarea('message', Input::old('message'),
+			['rows' => '3', 'id'=>'message', 'class'=>'input-xlarge error', 'placeholder' => 'Message']) !!}
 			{!! $errors->first('message','<p class="help-block error">:message</p>') !!}
 		</div>
 	</div>
 	@else
 	<div class="form-group">
 		<div class="col-sm-9">
-			{!! Form::textarea('message', Input::old('message'), array('rows' => '3','class'=>'form-control')) !!}
+			{!! Form::textarea('message', Input::old('message'), ['rows' => '3', 'id'=>'message', 'class'=>'form-control']) !!}
 		</div>
 	</div>
 	@endif
