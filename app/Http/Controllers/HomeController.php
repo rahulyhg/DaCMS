@@ -19,32 +19,20 @@ use Config;
 class HomeController extends Controller
 {
 
-
 	public function getContact()
 	{
-		//meta
-		$meta['title'] = 'Contact form';
-		$meta['canonical'] = Config::get('app.url').'/contact';
-		$meta['robots'] = 'noindex';
-
-		// assets
-		Asset::add('https://cdn.roumen.it/repo/ckeditor/4.4.6/basic/ckeditor.js');
-		$script = "$(function(){CKEDITOR.replace('message',{toolbar:'Basic',height:'150px',width:'555px',toolbarCanCollapse:true,toolbarStartupExpanded:false,startupShowBorders:false});});";
-		Asset::addScript($script);
-
-		// view
-		return view('home.contact')->with('meta', $meta);
+		// get the view
+		return view('home.contact');
 	}
-
 
 	public function postContact()
 	{
 		$rules = [
-				'name'  => 'required|min:2|max:50',
-				'email' => 'required|email',
-				'subject'  => 'required|min:2|max:50',
-				'message'  => 'required|min:10',
-				'g-recaptcha-response' => 'required|recaptcha'
+			'name'  => 'required|min:2|max:50',
+			'email' => 'required|email',
+			'subject'  => 'required|min:2|max:50',
+			'message'  => 'required|min:10',
+			'g-recaptcha-response' => 'required|recaptcha'
 		];
 
 		$validation = Validator::make(Input::all(), $rules);
@@ -53,11 +41,11 @@ class HomeController extends Controller
 		{
 			// send e-mail
 			$data = [
-						'body'=> Purifier::clean(Input::get('message')),
-						'subject'=> strip_tags(Purifier::clean(Input::get('subject'))),
-						'name'=> strip_tags(Purifier::clean(Input::get('name'))),
-						'email' => strip_tags(Purifier::clean(Input::get('email')))
-					];
+				'body'=> Purifier::clean(Input::get('message')),
+				'subject'=> strip_tags(Purifier::clean(Input::get('subject'))),
+				'name'=> strip_tags(Purifier::clean(Input::get('name'))),
+				'email' => strip_tags(Purifier::clean(Input::get('email')))
+			];
 
 		   Mail::send('emails.contact', $data, function($message)
 			{
