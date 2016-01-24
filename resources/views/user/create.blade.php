@@ -1,12 +1,17 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Create user</h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Create new user';
+?>
 @endsection
 
 @section('content')
 
-{!! Form::open(array('url'=>secure_url('/user/add'), 'class'=>'form-horizontal')) !!}
+<h1 class="page-header">Create new user</h1>
+
+{!! Form::open(['url'=>secure_url('/user/add'), 'class'=>'form-horizontal']) !!}
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -55,20 +60,20 @@
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::label('isActive', 'isActive') !!} {!! Form::select('isActive', array('1' => 'yes', '0' => 'no'), Input::get('isActive')) !!}
+		{!! Form::label('isActive', 'isActive') !!} {!! Form::select('isActive', ['1' => 'yes', '0' => 'no'], Input::get('isActive')) !!}
 		</div>
 	</div>
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::label('usergroup', 'Usergroup') !!}
-		{!! Form::select('usergroup', array('4'=>'users','3'=>'editors','2'=>'moderators','1'=>'admins'), Input::get('usergroup')) !!}
+		{!! Form::label('role', 'Role') !!}
+		{!! Form::select('role', ['1'=>'User','6'=>'Editor','7'=>'Moderator','8'=>'Admin'], Input::get('role')) !!}
 		</div>
 	</div>
 
 	<div class="form-group">
 			<div class="col-sm-8">
-			{!! Form::submit('Create!', array('class'=>'submit')) !!}
+			{!! Form::submit('Create!', ['class'=>'submit']) !!}
 		</div>
 	</div>
 

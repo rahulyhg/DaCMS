@@ -1,10 +1,18 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">DaCMS <small>Login form</small></h1>
+@section('meta')
+<?php
+// meta users
+$layout->title = 'Login form';
+$layout->robots = 'noindex';
+$layout->canonical = secure_url('login')
+?>
 @endsection
 
 @section('content')
+
+<h1 class="page-header">DaCMS <small>Login form</small></h1>
+
 <div class="row">
    @if ($errors->getMessages())
       <div class="alert alert-danger">

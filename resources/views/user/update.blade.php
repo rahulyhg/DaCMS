@@ -1,12 +1,24 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="user-header">Edit <small><a href="{{secure_url('/user/'.$user->id)}}">{{$user->username}}</a></small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Update: '.$user->username;
+?>
+@endsection
+
+@section('assets')
+<?php
+$s = "$('#deleteBtn').click(function(){window.location = '".secure_url('/user/del/'.$user->id)."';});";
+Asset::addScript($s, 'ready');
+?>
 @endsection
 
 @section('content')
 
-{!! Form::open(array('url'=>secure_url('/user/edit/'.$user->id), 'class'=>'form-horizontal')) !!}
+<h1 class="page-header">Update user: <small><a href="{{ secure_url('/user/'.$user->id)}}">{{$user->username}}</a></small></h1>
+
+{!! Form::open(['url'=>secure_url('/user/edit/'.$user->id), 'class'=>'form-horizontal']) !!}
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -52,15 +64,15 @@
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::label('usergroup', 'Usergroup') !!}
-		{!! Form::select('usergroup', array('4'=>'users','3'=>'editors','2'=>'moderators','1'=>'admins'), $user->roleId($user->id)) !!}
+		{!! Form::label('role', 'Role') !!}
+		{!! Form::select('role', ['1'=>'User','6'=>'Editor','7'=>'Moderator','8'=>'Admin'], $user->role) !!}
 		</div>
 	</div>
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::submit('Update!', array('class'=>'btn-primary btn', 'type'=>'submit')) !!}
-		{!! Form::button('DELETE!', array('class'=>'btn-danger btn', 'type'=>'button', 'id'=>'deleteBtn') ) !!}
+		{!! Form::submit('Update!', ['class'=>'btn-primary btn', 'type'=>'submit']) !!}
+		{!! Form::button('DELETE!', ['class'=>'btn-danger btn', 'type'=>'button', 'id'=>'deleteBtn']) !!}
 		</div>
 	</div>
 
