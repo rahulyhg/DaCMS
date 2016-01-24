@@ -1,12 +1,17 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Create category</h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Create new category';
+?>
 @endsection
 
 @section('content')
 
-{!! Form::open(array('url'=>secure_url('/category/add'), 'class'=>'form-horizontal')) !!}
+<h1 class="page-header">Create category</h1>
+
+{!! Form::open(['url'=>secure_url('/category/add'), 'class'=>'form-horizontal']) !!}
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -28,7 +33,7 @@
 
 	<div class="form-group">
 			<div class="col-sm-8">
-			{!! Form::submit('Create!',array('class'=>'submit')) !!}
+			{!! Form::submit('Create!', ['class'=>'submit']) !!}
 		</div>
 	</div>
 
