@@ -1,5 +1,15 @@
 @extends('layouts.main')
 
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Tag list';
+$layout->description = 'List of all popular tags that have been used in this website.';
+$layout->keywords = 'tag list, tags';
+$layout->canonical = secure_url('tags');
+?>
+@endsection
+
 @section('content')
 
 <section id="widepage">

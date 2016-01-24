@@ -1,12 +1,24 @@
 @extends('layouts.main')
 
-@section('header')
-<h1 class="page-header">Edit <small><a href="{{ secure_url('/tag/'.$tag->slug)}}">{{$tag->name}}</a></small></h1>
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Update: '.$tag->name;
+?>
+@endsection
+
+@section('assets')
+<?php
+$s = "$('#deleteBtn').click(function(){window.location = '".secure_url('/tag/del/'.$tag->id)."';});";
+Asset::addScript($s, 'ready');
+?>
 @endsection
 
 @section('content')
 
-{!! Form::open(array('url'=>secure_url('/tag/edit/'.$tag->id), 'class'=>'form-horizontal')) !!}
+<h1 class="page-header">Update: <small><a href="{{ secure_url('/tag/'.$tag->slug)}}">{{$tag->name}}</a></small></h1>
+
+{!! Form::open(['url'=>secure_url('/tag/edit/'.$tag->id), 'class'=>'form-horizontal']) !!}
 
 	<div class="form-group">
 		<div class="col-sm-8">
@@ -28,8 +40,8 @@
 
 	<div class="form-group">
 		<div class="col-sm-8">
-		{!! Form::submit('Update!', array('class'=>'btn-primary btn', 'type'=>'submit')) !!}
-		{!! Form::button('DELETE!', array('class'=>'btn-danger btn', 'type'=>'button', 'id'=>'deleteBtn') ) !!}
+		{!! Form::submit('Update!', ['class'=>'btn-primary btn', 'type'=>'submit']) !!}
+		{!! Form::button('DELETE!', ['class'=>'btn-danger btn', 'type'=>'button', 'id'=>'deleteBtn']) !!}
 		</div>
 	</div>
 

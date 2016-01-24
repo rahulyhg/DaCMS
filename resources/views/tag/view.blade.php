@@ -1,13 +1,23 @@
 @extends('layouts.main')
 
-@section('header')
+@section('meta')
+<?php
+// meta tags
+$layout->title = 'Tag: ' . $tag->name;
+$layout->description = 'Posts with tag ' . $tag->name;
+$layout->keywords = 'posts, tag, ' . $tag->name;
+$layout->canonical = secure_url('tag/'.$tag->slug)
+?>
+@endsection
+
+@section('content')
+
 <h1 class="page-header">
 	<div class="row">
 	 	<div class="col-xs-7">
-			Tag <small> {{ $tag->name }} </small>
+			tag <small> {{ $tag->name }} </small>
 		</div>
-		{{-- Check if the user is logged and is admin, moderator or editor --}}
-		@if (Auth::check() && in_array(Auth::user()->role(Auth::user()->id), ['admin', 'moderator', 'editor']))
+		@if ($authUser && $authUser->role > 6)
 		<div class="col-xs-4 col-xs-push-1">
 			<div class="text-right" style="font-size:40%;margin-top:20px">
 				<span class="glyphicon glyphicon-pencil"></span> <a href="{{secure_url('/tag/edit/'.$tag->id)}}">Edit</a>
@@ -16,9 +26,6 @@
 		@endif
 	</div>
 </h1>
-@endsection
-
-@section('content')
 
 <div class="row">
     <div class="col-xs-7">
