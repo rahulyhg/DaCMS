@@ -20,176 +20,88 @@ use Config;
 class UserController extends Controller
 {
 
-
 	public function getView($id)
 	{
+		// get user by id
 		$user = User::where('id','=', $id)->with('posts')->first();
-		if (empty($user)) return abort('404'); // not found
 
-		// meta
-		$meta['title'] = 'Profile of user: '.$user->username;
-		$meta['canonical'] = secure_url('user/'.$id);
-		$meta['description'] = 'Profile of user: '.$user->username;
-		$meta['keywords'] = ''.$user->username;
+		// missing user
+		if (empty($user)) return abort('404');
 
 		// view
-		return view('user.view')->with('meta', $meta)->with('user', $user);
+		return view('user.view', ['user'=>$user]);
 	}
 
-
-	public function getEdit($id)
+	public function getUpdate($id)
 	{
+		// get user to update
 		$user = User::where('id','=',$id)->first();
 
-		$meta['title'] = 'Edit user';
-
-		$s1 = "$('#deleteBtn').click(function(){window.location = '".secure_url('/user/del/'.$id)."';});";
-
-		Asset::addScript($s1, 'ready');
-
-		return view('user.edit')->with('meta', $meta)->with('user', $user);
+		// view
+		return view('user.update', ['user' => $user]);
 	}
 
-
-	public function postEdit($id)
+	public function postUpdate($id)
 	{
-		$rules = array(
-				'username'  => 'required|min:3|max:20',
-				//'password' => 'required|min:3',
-				'email'  => 'required|min:5',
-				'first_name'  => 'required|min:2|max:60',
-				'first_name' => 'required|min:2|max:60'
-		);
-
-		$validation = Validator::make(Input::all(), $rules);
-
-		if ($validation->passes())
-		{
-				$data = array(
-				   'username' => Input::get('username'),
-				   //'password' => Input::get('password'),
-				   'email' => Input::get('email'),
-				   'first_name' => Input::get('first_name'),
-				   'last_name' => Input::get('last_name'),
-				   'isActive' => Input::get('isActive')
-				);
-
-		 User::where('id','=',$id)->update($data);
-
-		 \DB::table('users_to_usergroups')->where('user_id','=',$id)->update(['usergroup_id'=>Input::get('usergroup')]);
-
-		}
-
-		return Redirect::secure('user/edit/'.$id)->withErrors($validation);
+		// update user
+		return User::updateUser($id, Input::all());
 	}
-
 
 	public function getCreate()
 	{
-		$meta['title'] = "Create user";
-
-		return view('user.create')->with('meta', $meta);
+		// view
+		return view('user.create');
 	}
-
 
 	public function postCreate()
 	{
-		$rules = array(
-				'username'  => 'required|min:3|max:20',
-				'password' => 'required|min:3',
-				'email'  => 'required|min:5',
-				'first_name'  => 'required|min:2|max:60',
-				'first_name' => 'required|min:2|max:60'
-		);
-
-		$validation = Validator::make(Input::all(), $rules);
-
-		if ($validation->passes())
-		{
-				$data = [
-				   'username' => Input::get('username'),
-				   'password' => Hash::make(Input::get('password')), // hash the password
-				   'email' => Input::get('email'),
-				   'first_name' => Input::get('first_name'),
-				   'last_name' => Input::get('last_name'),
-				   'isActive' => Input::get('isActive')
-				];
-
-		 $id = User::insertGetId($data);
-
-		 \DB::table('users_to_usergroups')->insert(['user_id'=>$id,'usergroup_id'=>Input::get('usergroup')]);
-
-		 return Redirect::secure('/'.Input::get('slug'));
-
-		}
-
-		return Redirect::secure('user/add')->withErrors($validation);
+		// create new user
+		return User::createUser(Input::all());
 	}
-
 
 	public function getDelete($id)
 	{
+		// get user to delete
 		$user = User::where('id','=',$id)->first();
 
-		$meta['title'] = 'DELETE: ' . $user->title;
-
-		return view('user.delete')->with('meta', $meta)->with('user', $user);
+		// view
+		return view('user.delete', ['user' => $user]);
 	}
-
 
 	public function postDelete($id)
 	{
-		  if (Input::get('confirm')==true)
-		  {
-			  User::where('id','=',$id)->delete();
-
-			  \DB::table('users_to_usergroups')->where('user_id','=',$id)->delete();
-
-			  return Redirect::secure('/');
-		  }
-
-		  return Redirect::secure('user/del/'.$id);
+		// delete user
+		return User::deleteUser($id,Input::all());
 	}
-
 
 	public function getDashboard()
 	{
 		// data
 		$user = User::where('id', '=', $this->authUser->id)->first();
 
-		// meta
-		$meta['title'] = 'Dashboard';
-		$meta['canonical'] = Config::get('app.url').'dashboard';
-		$meta['description'] = '';
-		$meta['keywords'] = '';
-
 		// assets
 		Asset::add(secure_url('js/home.js'));
 
 		// return view
-		return view('user.dashboard')->with('meta', $meta)->with('user', $user);
+		return view('user.dashboard', ['user' => $user]);
 	}
-
 
 	public function getLogin()
 	{
+		// check for login
 		if (Auth::check()) return Redirect::secure('/');
 
-		$meta['title'] = 'Login form';
-		$meta['canonical'] = Config::get('app.url').'login';
-		$meta['robots'] = 'noindex';
-
-		return view('user.login')->with('meta', $meta);
+		// view
+		return view('user.login');
 	}
-
 
 	public function postLogin()
 	{
-		$rules = array(
+		$rules = [
 				'email'  => 'required|email',
 				'password' => 'required|min:4',
 				'g-recaptcha-response' => 'required|recaptcha'
-		);
+		];
 
 		$validation = Validator::make(Input::all(), $rules);
 
@@ -212,7 +124,6 @@ class UserController extends Controller
 		}
 	}
 
-
 	public function getLogout()
 	{
 		if (!Auth::check()) return Redirect::secure('/');
@@ -221,6 +132,5 @@ class UserController extends Controller
 
 		return Redirect::secure('login');
 	}
-
 
 }
